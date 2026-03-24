@@ -1,0 +1,101 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 440" width="800" height="440" font-family="'Segoe UI',system-ui,sans-serif">
+  <rect width="800" height="440" rx="16" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+
+  <!-- Title -->
+  <text x="400" y="38" text-anchor="middle" font-size="22" font-weight="700" fill="#1e293b">📋 Postup pro určení definičního oboru D(f)</text>
+
+  <!-- Step 1 -->
+  <g transform="translate(40,60)">
+    <rect x="0" y="0" width="340" height="150" rx="14" fill="#eff6ff" stroke="#3b82f6" stroke-width="2"/>
+    <!-- Number badge -->
+    <circle cx="30" cy="30" r="20" fill="#3b82f6"/>
+    <text x="30" y="37" text-anchor="middle" font-size="18" font-weight="800" fill="#ffffff">1</text>
+    <text x="60" y="36" font-size="16" font-weight="700" fill="#2563eb">🔍 Najdi omezení</text>
+
+    <text x="20" y="65" font-size="13" fill="#1e293b">Podívej se na předpis funkce:</text>
+
+    <g transform="translate(20,78)">
+      <rect x="0" y="0" width="140" height="28" rx="6" fill="#fef2f2" stroke="#fca5a5" stroke-width="1"/>
+      <text x="70" y="19" text-anchor="middle" font-size="13" font-weight="600" fill="#dc2626">Zlomek? → ≠ 0</text>
+
+      <rect x="155" y="0" width="160" height="28" rx="6" fill="#fef2f2" stroke="#fca5a5" stroke-width="1"/>
+      <text x="235" y="19" text-anchor="middle" font-size="13" font-weight="600" fill="#dc2626">Odmocnina? → ≥ 0</text>
+    </g>
+
+    <rect x="20" y="116" width="150" height="26" rx="6" fill="#fef2f2" stroke="#fca5a5" stroke-width="1"/>
+    <text x="95" y="133" text-anchor="middle" font-size="13" font-weight="600" fill="#dc2626">Logaritmus? → &gt; 0</text>
+  </g>
+
+  <!-- Arrow 1→2 -->
+  <g transform="translate(390,130)">
+    <line x1="0" y1="0" x2="30" y2="0" stroke="#94a3b8" stroke-width="3"/>
+    <polygon points="30,0 24,-4 24,4" fill="#94a3b8"/>
+  </g>
+
+  <!-- Step 2 -->
+  <g transform="translate(430,60)">
+    <rect x="0" y="0" width="340" height="150" rx="14" fill="#fefce8" stroke="#d97706" stroke-width="2"/>
+    <circle cx="30" cy="30" r="20" fill="#d97706"/>
+    <text x="30" y="37" text-anchor="middle" font-size="18" font-weight="800" fill="#ffffff">2</text>
+    <text x="60" y="36" font-size="16" font-weight="700" fill="#d97706">✏️ Napiš podmínky</text>
+
+    <text x="20" y="62" font-size="13" font-weight="600" fill="#1e293b">Příklad: f(x) = 1/√(x+4)</text>
+
+    <rect x="20" y="72" width="300" height="26" rx="6" fill="#f5f3ff" stroke="#c4b5fd" stroke-width="1"/>
+    <text x="30" y="90" font-size="13" font-weight="600" fill="#7c3aed">① x + 4 ≥ 0</text>
+    <text x="220" y="90" font-size="11" fill="#64748b">(pod √ ≥ 0)</text>
+
+    <rect x="20" y="102" width="300" height="26" rx="6" fill="#eff6ff" stroke="#bfdbfe" stroke-width="1"/>
+    <text x="30" y="120" font-size="13" font-weight="600" fill="#2563eb">② √(x+4) ≠ 0</text>
+    <text x="220" y="120" font-size="11" fill="#64748b">(jmen. ≠ 0)</text>
+
+    <text x="20" y="145" font-size="13" font-weight="700" fill="#059669">→  x ≥ −4  ∧  x ≠ −4</text>
+  </g>
+
+  <!-- Step 3 -->
+  <g transform="translate(40,240)">
+    <rect x="0" y="0" width="340" height="150" rx="14" fill="#f5f3ff" stroke="#7c3aed" stroke-width="2"/>
+    <circle cx="30" cy="30" r="20" fill="#7c3aed"/>
+    <text x="30" y="37" text-anchor="middle" font-size="18" font-weight="800" fill="#ffffff">3</text>
+    <text x="60" y="36" font-size="16" font-weight="700" fill="#7c3aed">📐 Vyřeš nerovnice</text>
+
+    <g transform="translate(20,55)" font-size="14" fill="#1e293b">
+      <text x="0" y="0" font-weight="600">Spojíme podmínky:</text>
+      <text x="0" y="28" fill="#7c3aed">x ≥ −4  ∧  x ≠ −4</text>
+      <text x="0" y="56" fill="#1e293b" font-size="18" font-weight="700">⟹  x &gt; −4</text>
+      <text x="0" y="82" fill="#64748b" font-size="12">Bod −4 nesplňuje druhou podmínku → vyloučíme</text>
+    </g>
+  </g>
+
+  <!-- Arrow 3→4 -->
+  <g transform="translate(390,310)">
+    <line x1="0" y1="0" x2="30" y2="0" stroke="#94a3b8" stroke-width="3"/>
+    <polygon points="30,0 24,-4 24,4" fill="#94a3b8"/>
+  </g>
+
+  <!-- Step 4 -->
+  <g transform="translate(430,240)">
+    <rect x="0" y="0" width="340" height="150" rx="14" fill="#ecfdf5" stroke="#10b981" stroke-width="2.5"/>
+    <circle cx="30" cy="30" r="20" fill="#059669"/>
+    <text x="30" y="37" text-anchor="middle" font-size="18" font-weight="800" fill="#ffffff">4</text>
+    <text x="60" y="36" font-size="16" font-weight="700" fill="#059669">📝 Zapiš výsledek</text>
+
+    <g transform="translate(20,55)">
+      <text x="0" y="0" font-size="14" font-weight="600" fill="#1e293b">Zapiš jako interval:</text>
+      <rect x="30" y="14" width="220" height="40" rx="10" fill="#d1fae5" stroke="#10b981" stroke-width="2"/>
+      <text x="140" y="40" text-anchor="middle" font-size="22" font-weight="800" fill="#059669">D(f) = (−4, +∞)</text>
+
+      <!-- mini number line -->
+      <text x="0" y="82" font-size="12" font-weight="600" fill="#475569">Na číselné ose:</text>
+      <line x1="30" y1="100" x2="290" y2="100" stroke="#475569" stroke-width="1.5"/>
+      <polygon points="290,100 285,97 285,103" fill="#475569"/>
+      <line x1="110" y1="100" x2="285" y2="100" stroke="#059669" stroke-width="5" opacity="0.35" stroke-linecap="round"/>
+      <circle cx="105" cy="100" r="5" fill="#ffffff" stroke="#ef4444" stroke-width="2"/>
+      <text x="105" y="117" text-anchor="middle" font-size="10" font-weight="700" fill="#ef4444">−4</text>
+    </g>
+  </g>
+
+  <!-- Bottom tip -->
+  <rect x="240" y="404" width="320" height="28" rx="8" fill="#f0fdf4" stroke="#10b981" stroke-width="1"/>
+  <text x="400" y="423" text-anchor="middle" font-size="13" font-weight="600" fill="#059669">💡 Žádné omezení? → D(f) = ℝ</text>
+</svg>

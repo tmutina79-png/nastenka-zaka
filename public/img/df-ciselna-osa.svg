@@ -1,0 +1,157 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500" font-family="'Segoe UI',system-ui,sans-serif">
+  <rect width="800" height="500" rx="16" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+
+  <!-- Title -->
+  <text x="400" y="36" text-anchor="middle" font-size="21" font-weight="700" fill="#1e293b">📏 Znázornění D(f) na číselné ose – přehled</text>
+
+  <!-- ═══ Line 1: D(f) = ℝ ═══ -->
+  <g transform="translate(40,60)">
+    <!-- Function label -->
+    <rect x="0" y="0" width="180" height="34" rx="8" fill="#eff6ff" stroke="#3b82f6" stroke-width="1.5"/>
+    <text x="90" y="23" text-anchor="middle" font-size="15" font-weight="700" fill="#2563eb">f(x) = 3x − 7</text>
+
+    <!-- Number line -->
+    <line x1="200" y1="17" x2="620" y2="17" stroke="#475569" stroke-width="2"/>
+    <polygon points="620,17 614,13 614,21" fill="#475569"/>
+    <!-- Highlight FULL -->
+    <line x1="205" y1="17" x2="615" y2="17" stroke="#3b82f6" stroke-width="7" opacity="0.35" stroke-linecap="round"/>
+    <!-- Ticks -->
+    <g font-size="10" fill="#94a3b8" text-anchor="middle">
+      <line x1="260" y1="13" x2="260" y2="21" stroke="#94a3b8" stroke-width="1"/>
+      <text x="260" y="33">−3</text>
+      <line x1="310" y1="13" x2="310" y2="21" stroke="#94a3b8" stroke-width="1"/>
+      <text x="310" y="33">−1</text>
+      <line x1="360" y1="13" x2="360" y2="21" stroke="#94a3b8" stroke-width="1"/>
+      <text x="360" y="33">0</text>
+      <line x1="410" y1="13" x2="410" y2="21" stroke="#94a3b8" stroke-width="1"/>
+      <text x="410" y="33">1</text>
+      <line x1="460" y1="13" x2="460" y2="21" stroke="#94a3b8" stroke-width="1"/>
+      <text x="460" y="33">3</text>
+      <line x1="510" y1="13" x2="510" y2="21" stroke="#94a3b8" stroke-width="1"/>
+      <text x="510" y="33">5</text>
+    </g>
+
+    <!-- Result -->
+    <rect x="640" y="0" width="130" height="34" rx="8" fill="#ecfdf5" stroke="#10b981" stroke-width="1.5"/>
+    <text x="705" y="23" text-anchor="middle" font-size="15" font-weight="700" fill="#059669">D(f) = ℝ</text>
+
+    <!-- Description -->
+    <text x="360" y="52" text-anchor="middle" font-size="12" fill="#64748b">Žádné omezení → celá osa je povolená</text>
+  </g>
+
+  <!-- ═══ Line 2: D(f) = ℝ ∖ {3} ═══ -->
+  <g transform="translate(40,170)">
+    <rect x="0" y="0" width="180" height="34" rx="8" fill="#eff6ff" stroke="#3b82f6" stroke-width="1.5"/>
+    <text x="90" y="23" text-anchor="middle" font-size="15" font-weight="700" fill="#2563eb">f(x) = 1/(x−3)</text>
+
+    <line x1="200" y1="17" x2="620" y2="17" stroke="#475569" stroke-width="2"/>
+    <polygon points="620,17 614,13 614,21" fill="#475569"/>
+    <!-- Highlight with gap -->
+    <line x1="205" y1="17" x2="450" y2="17" stroke="#10b981" stroke-width="7" opacity="0.35" stroke-linecap="round"/>
+    <line x1="470" y1="17" x2="615" y2="17" stroke="#10b981" stroke-width="7" opacity="0.35" stroke-linecap="round"/>
+    <!-- Excluded point -->
+    <circle cx="460" cy="17" r="7" fill="#ffffff" stroke="#ef4444" stroke-width="2.5"/>
+    <!-- X mark -->
+    <line x1="455" y1="12" x2="465" y2="22" stroke="#ef4444" stroke-width="2"/>
+    <line x1="465" y1="12" x2="455" y2="22" stroke="#ef4444" stroke-width="2"/>
+
+    <g font-size="10" fill="#94a3b8" text-anchor="middle">
+      <line x1="260" y1="13" x2="260" y2="21" stroke="#94a3b8" stroke-width="1"/>
+      <text x="260" y="33">−3</text>
+      <line x1="310" y1="13" x2="310" y2="21" stroke="#94a3b8" stroke-width="1"/>
+      <text x="310" y="33">−1</text>
+      <line x1="360" y1="13" x2="360" y2="21" stroke="#94a3b8" stroke-width="1"/>
+      <text x="360" y="33">0</text>
+      <line x1="410" y1="13" x2="410" y2="21" stroke="#94a3b8" stroke-width="1"/>
+      <text x="410" y="33">2</text>
+      <line x1="510" y1="13" x2="510" y2="21" stroke="#94a3b8" stroke-width="1"/>
+      <text x="510" y="33">5</text>
+    </g>
+    <text x="460" y="33" text-anchor="middle" font-size="11" font-weight="700" fill="#ef4444">3</text>
+
+    <rect x="640" y="0" width="130" height="34" rx="8" fill="#ecfdf5" stroke="#10b981" stroke-width="1.5"/>
+    <text x="705" y="23" text-anchor="middle" font-size="14" font-weight="700" fill="#059669">D(f) = ℝ∖{3}</text>
+
+    <text x="360" y="52" text-anchor="middle" font-size="12" fill="#64748b">Celá osa kromě bodu x = 3 (prázdné kolečko = nepatří)</text>
+  </g>
+
+  <!-- ═══ Line 3: D(f) = ⟨1, +∞) ═══ -->
+  <g transform="translate(40,280)">
+    <rect x="0" y="0" width="180" height="34" rx="8" fill="#f5f3ff" stroke="#7c3aed" stroke-width="1.5"/>
+    <text x="90" y="23" text-anchor="middle" font-size="15" font-weight="700" fill="#7c3aed">f(x) = √(x−1)</text>
+
+    <line x1="200" y1="17" x2="620" y2="17" stroke="#475569" stroke-width="2"/>
+    <polygon points="620,17 614,13 614,21" fill="#475569"/>
+    <!-- Forbidden zone (left of 1) -->
+    <rect x="200" y="7" width="210" height="20" fill="#ef4444" opacity="0.06" rx="3"/>
+    <!-- Highlight from 1 -->
+    <line x1="410" y1="17" x2="615" y2="17" stroke="#7c3aed" stroke-width="7" opacity="0.35" stroke-linecap="round"/>
+    <!-- Filled dot at 1 (included) -->
+    <circle cx="410" cy="17" r="7" fill="#7c3aed"/>
+
+    <g font-size="10" fill="#94a3b8" text-anchor="middle">
+      <line x1="260" y1="13" x2="260" y2="21" stroke="#94a3b8" stroke-width="1"/>
+      <text x="260" y="33">−3</text>
+      <line x1="310" y1="13" x2="310" y2="21" stroke="#94a3b8" stroke-width="1"/>
+      <text x="310" y="33">−1</text>
+      <line x1="360" y1="13" x2="360" y2="21" stroke="#94a3b8" stroke-width="1"/>
+      <text x="360" y="33">0</text>
+      <line x1="460" y1="13" x2="460" y2="21" stroke="#94a3b8" stroke-width="1"/>
+      <text x="460" y="33">3</text>
+      <line x1="510" y1="13" x2="510" y2="21" stroke="#94a3b8" stroke-width="1"/>
+      <text x="510" y="33">5</text>
+    </g>
+    <text x="410" y="33" text-anchor="middle" font-size="11" font-weight="700" fill="#7c3aed">1</text>
+
+    <rect x="640" y="0" width="130" height="34" rx="8" fill="#f5f3ff" stroke="#7c3aed" stroke-width="1.5"/>
+    <text x="705" y="23" text-anchor="middle" font-size="14" font-weight="700" fill="#7c3aed">D(f)=⟨1,+∞)</text>
+
+    <text x="360" y="52" text-anchor="middle" font-size="12" fill="#64748b">Od bodu 1 doprava (plné kolečko = bod patří do D(f))</text>
+  </g>
+
+  <!-- ═══ Line 4: D(f) = (−4, +∞) ═══ -->
+  <g transform="translate(40,390)">
+    <rect x="0" y="0" width="180" height="34" rx="8" fill="#fefce8" stroke="#d97706" stroke-width="1.5"/>
+    <text x="90" y="23" text-anchor="middle" font-size="14" font-weight="700" fill="#d97706">f(x) = 1/√(x+4)</text>
+
+    <line x1="200" y1="17" x2="620" y2="17" stroke="#475569" stroke-width="2"/>
+    <polygon points="620,17 614,13 614,21" fill="#475569"/>
+    <!-- Forbidden zone -->
+    <rect x="200" y="7" width="110" height="20" fill="#ef4444" opacity="0.06" rx="3"/>
+    <!-- Highlight from −4 (open) -->
+    <line x1="318" y1="17" x2="615" y2="17" stroke="#d97706" stroke-width="7" opacity="0.35" stroke-linecap="round"/>
+    <!-- Open dot at −4 (NOT included) -->
+    <circle cx="310" cy="17" r="7" fill="#ffffff" stroke="#ef4444" stroke-width="2.5"/>
+
+    <g font-size="10" fill="#94a3b8" text-anchor="middle">
+      <line x1="260" y1="13" x2="260" y2="21" stroke="#94a3b8" stroke-width="1"/>
+      <text x="260" y="33">−6</text>
+      <line x1="360" y1="13" x2="360" y2="21" stroke="#94a3b8" stroke-width="1"/>
+      <text x="360" y="33">−2</text>
+      <line x1="410" y1="13" x2="410" y2="21" stroke="#94a3b8" stroke-width="1"/>
+      <text x="410" y="33">0</text>
+      <line x1="460" y1="13" x2="460" y2="21" stroke="#94a3b8" stroke-width="1"/>
+      <text x="460" y="33">2</text>
+      <line x1="510" y1="13" x2="510" y2="21" stroke="#94a3b8" stroke-width="1"/>
+      <text x="510" y="33">4</text>
+    </g>
+    <text x="310" y="33" text-anchor="middle" font-size="11" font-weight="700" fill="#ef4444">−4</text>
+
+    <rect x="640" y="0" width="130" height="34" rx="8" fill="#fefce8" stroke="#d97706" stroke-width="1.5"/>
+    <text x="705" y="23" text-anchor="middle" font-size="13" font-weight="700" fill="#d97706">D(f)=(−4,+∞)</text>
+
+    <text x="360" y="52" text-anchor="middle" font-size="12" fill="#64748b">Od −4 doprava (prázdné kolečko = bod −4 nepatří)</text>
+  </g>
+
+  <!-- Legend at bottom -->
+  <g transform="translate(140,462)">
+    <circle cx="0" cy="0" r="6" fill="#7c3aed"/>
+    <text x="12" y="4" font-size="12" font-weight="600" fill="#475569">= bod patří do D(f)</text>
+
+    <circle cx="200" cy="0" r="6" fill="#ffffff" stroke="#ef4444" stroke-width="2.5"/>
+    <text x="212" y="4" font-size="12" font-weight="600" fill="#475569">= bod NEpatří do D(f)</text>
+
+    <line x1="400" y1="0" x2="440" y2="0" stroke="#10b981" stroke-width="6" opacity="0.4" stroke-linecap="round"/>
+    <text x="450" y="4" font-size="12" font-weight="600" fill="#475569">= povolené hodnoty x</text>
+  </g>
+</svg>

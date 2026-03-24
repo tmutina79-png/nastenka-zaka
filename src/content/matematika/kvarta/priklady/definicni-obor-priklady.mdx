@@ -1,0 +1,116 @@
+---
+title: "Příklady – Definiční obor"
+description: "Příklady k procvičení určování definičního oboru funkce."
+trida: "kvarta"
+kategorie: "priklady"
+order: 1
+---
+
+import SelfCheck from '../../../../components/SelfCheck.svelte';
+import StepByStepSolution from '../../../../components/StepByStepSolution.svelte';
+import PDFWorksheetDefinicniObor from '../../../../components/PDFWorksheetDefinicniObor.svelte';
+
+# 🧩 Příklady – Definiční obor funkce
+
+V této sekci najdeš příklady zaměřené **jen na definiční obor funkce**. U každého příkladu máš nápovědu a postup řešení krok za krokem.
+
+<a href="#pdf-generator" class="inline-flex items-center gap-2 mt-2 mb-4 px-5 py-2.5 rounded-lg bg-blue-600 text-white font-bold text-sm hover:bg-blue-700 transition-colors no-underline shadow-sm">🖨️ Vygenerovat PDF s příklady ↓</a>
+
+---
+
+## Příklad 1: Lineární funkce bez omezení
+
+> 📝 **Zadání:** Urči definiční obor funkce $f(x) = -2x + 5$.
+
+<StepByStepSolution
+  client:load
+  hint="Podívej se, zda se v předpisu objevuje zlomek, odmocnina nebo logaritmus."
+  steps={[
+    "Předpis funkce: <strong>f(x) = -2x + 5</strong>.",
+    "V předpisu není zlomek, odmocnina ani logaritmus.",
+    "Za x můžeme dosadit libovolné reálné číslo.",
+    "<strong>Odpověď:</strong> Definiční obor je <strong>D(f) = ℝ</strong>."
+  ]}
+/>
+
+---
+
+## Příklad 2: Zlomek – zákaz dělení nulou
+
+> 📝 **Zadání:** Urči definiční obor funkce $f(x) = \dfrac{3}{x + 1}$.
+
+<StepByStepSolution
+  client:load
+  hint="Jmenovatel zlomku nesmí být nikdy roven nule."
+  steps={[
+    "Předpis funkce: <strong>f(x) = 3/(x + 1)</strong>.",
+    "Jmenovatel je <strong>x + 1</strong>. Platí podmínka: x + 1 ≠ 0.",
+    "Řešíme: x + 1 ≠ 0 ⇒ <strong>x ≠ -1</strong>.",
+    "<strong>Odpověď:</strong> Definiční obor je <strong>D(f) = ℝ ∖ {−1}</strong>."
+  ]}
+/>
+
+---
+
+## Příklad 3: Odmocnina – výraz pod odmocninou
+
+> 📝 **Zadání:** Urči definiční obor funkce $f(x) = \sqrt{2x - 4}$.
+
+<StepByStepSolution
+  client:load
+  hint="Výraz pod odmocninou musí být nezáporný (≥ 0)."
+  steps={[
+    "Předpis funkce: <strong>f(x) = √(2x − 4)</strong>.",
+    "Výraz pod odmocninou musí být nezáporný: <strong>2x − 4 ≥ 0</strong>.",
+    "Řešíme nerovnici: 2x ≥ 4 ⇒ <strong>x ≥ 2</strong>.",
+    "<strong>Odpověď:</strong> Definiční obor je <strong>D(f) = ⟨2, +∞)</strong>."
+  ]}
+/>
+
+---
+
+## Příklad 4: Odmocnina ve jmenovateli
+
+> 📝 **Zadání:** Urči definiční obor funkce $f(x) = \dfrac{1}{\sqrt{x - 3}}$.
+
+<StepByStepSolution
+  client:load
+  hint="Musí platit dvě podmínky: pod odmocninou ≥ 0 a zároveň jmenovatel ≠ 0."
+  steps={[
+    "Předpis funkce: <strong>f(x) = 1/√(x − 3)</strong>.",
+    "Pod odmocninou nesmí být záporné číslo: <strong>x − 3 ≥ 0</strong>.",
+    "Zároveň jmenovatel nesmí být nula: √(x − 3) ≠ 0 ⇒ x − 3 ≠ 0 ⇒ <strong>x ≠ 3</strong>.",
+    "Spojíme podmínky: x ≥ 3 a zároveň x ≠ 3 ⇒ <strong>x > 3</strong>.",
+    "<strong>Odpověď:</strong> Definiční obor je <strong>D(f) = (3, +∞)</strong>."
+  ]}
+/>
+
+---
+
+## Příklad 5: Definiční obor ze slovní úlohy
+
+> 📝 **Zadání:** Délka prkna v závislosti na počtu stejně dlouhých dílků je dána vztahem $d(n) = \dfrac{120}{n}$, kde $n$ je počet dílků. Jaký je definiční obor funkce, pokud prkno dělíme na celé dílky?
+
+<StepByStepSolution
+  client:load
+  hint="Zamysli se, jaké hodnoty může mít n v reálné situaci."
+  steps={[
+    "Funkce: <strong>d(n) = 120/n</strong>.",
+    "n označuje počet dílků – musí jít o <strong>kladné celé číslo</strong> (nemůže být 0, záporné ani zlomek).",
+    "Zároveň nesmíme dělit nulou ⇒ n ≠ 0 (to už splňuje podmínka kladného celého čísla).",
+    "V kontextu úlohy tedy: <strong>n ∈ {1, 2, 3, …}</strong>.",
+    "<strong>Odpověď:</strong> Definiční obor je množina všech <strong>kladných přirozených čísel</strong> (případně lze zapsat jako N⁺)."
+  ]}
+/>
+
+---
+
+<SelfCheck client:load id="kvarta-definicni-obor-priklady" label="Umím určit definiční obor funkce v různých typech úloh." />
+
+---
+
+## 🖨️ Pracovní list k tisku {#pdf-generator}
+
+Vyber si příklady a vygeneruj si PDF pracovní list, který si můžeš vytisknout a řešit na papíře.
+
+<PDFWorksheetDefinicniObor client:load />

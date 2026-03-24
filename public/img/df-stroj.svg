@@ -1,0 +1,110 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 420" width="800" height="420" font-family="'Segoe UI',system-ui,sans-serif">
+  <rect width="800" height="420" rx="16" fill="#ffffff" stroke="#e2e8f0" stroke-width="1"/>
+
+  <!-- Title -->
+  <text x="400" y="38" text-anchor="middle" font-size="22" font-weight="700" fill="#1e293b">🏭 Funkce jako stroj – definiční obor D(f)</text>
+
+  <!-- Allowed inputs (left) -->
+  <rect x="30" y="60" width="170" height="300" rx="14" fill="#ecfdf5" stroke="#10b981" stroke-width="2"/>
+  <text x="115" y="88" text-anchor="middle" font-size="15" font-weight="700" fill="#059669">POVOLENÉ VSTUPY</text>
+  <text x="115" y="108" text-anchor="middle" font-size="12" fill="#047857">x ∈ D(f)</text>
+
+  <!-- Allowed input values -->
+  <g font-size="20" font-weight="600" text-anchor="middle">
+    <circle cx="80" cy="145" r="22" fill="#d1fae5" stroke="#10b981" stroke-width="2"/>
+    <text x="80" y="152" fill="#059669">0</text>
+    <circle cx="150" cy="145" r="22" fill="#d1fae5" stroke="#10b981" stroke-width="2"/>
+    <text x="150" y="152" fill="#059669">1</text>
+    <circle cx="80" cy="200" r="22" fill="#d1fae5" stroke="#10b981" stroke-width="2"/>
+    <text x="80" y="207" fill="#059669">5</text>
+    <circle cx="150" cy="200" r="22" fill="#d1fae5" stroke="#10b981" stroke-width="2"/>
+    <text x="150" y="207" fill="#059669">−2</text>
+    <circle cx="115" cy="255" r="22" fill="#d1fae5" stroke="#10b981" stroke-width="2"/>
+    <text x="115" y="262" fill="#059669">7</text>
+  </g>
+
+  <!-- Arrows from inputs to machine -->
+  <g stroke="#10b981" stroke-width="3" fill="none" marker-end="url(#arrowGreen)">
+    <line x1="200" y1="180" x2="290" y2="180"/>
+  </g>
+  <defs>
+    <marker id="arrowGreen" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#10b981"/>
+    </marker>
+    <marker id="arrowAmber" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#d97706"/>
+    </marker>
+    <marker id="arrowRed" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+
+  <!-- INPUT label -->
+  <text x="245" y="162" text-anchor="middle" font-size="14" font-weight="700" fill="#059669">x</text>
+  <text x="245" y="178" text-anchor="middle" font-size="11" fill="#059669">(vstup)</text>
+
+  <!-- Machine (function) -->
+  <rect x="300" y="110" width="200" height="140" rx="18" fill="#eff6ff" stroke="#3b82f6" stroke-width="3"/>
+  <!-- Gears icon -->
+  <circle cx="360" cy="160" r="16" fill="none" stroke="#93c5fd" stroke-width="2" stroke-dasharray="6,3"/>
+  <circle cx="440" cy="160" r="12" fill="none" stroke="#93c5fd" stroke-width="2" stroke-dasharray="5,3"/>
+  <text x="400" y="198" text-anchor="middle" font-size="28" font-weight="800" fill="#2563eb">f(x)</text>
+  <text x="400" y="222" text-anchor="middle" font-size="12" font-weight="600" fill="#3b82f6">FUNKCE</text>
+  <text x="400" y="240" text-anchor="middle" font-size="11" fill="#64748b">zpracuje vstup x</text>
+
+  <!-- Arrow from machine to output -->
+  <g stroke="#d97706" stroke-width="3" fill="none" marker-end="url(#arrowAmber)">
+    <line x1="510" y1="180" x2="590" y2="180"/>
+  </g>
+
+  <!-- OUTPUT label -->
+  <text x="555" y="162" text-anchor="middle" font-size="14" font-weight="700" fill="#d97706">f(x)</text>
+  <text x="555" y="178" text-anchor="middle" font-size="11" fill="#d97706">(výstup)</text>
+
+  <!-- Output values -->
+  <rect x="600" y="60" width="170" height="180" rx="14" fill="#fefce8" stroke="#d97706" stroke-width="2"/>
+  <text x="685" y="88" text-anchor="middle" font-size="15" font-weight="700" fill="#d97706">VÝSTUPY</text>
+  <text x="685" y="108" text-anchor="middle" font-size="12" fill="#92400e">f(x)</text>
+  <g font-size="18" font-weight="600" text-anchor="middle">
+    <circle cx="650" cy="145" r="20" fill="#fef9c3" stroke="#d97706" stroke-width="2"/>
+    <text x="650" y="152" fill="#92400e">−7</text>
+    <circle cx="720" cy="145" r="20" fill="#fef9c3" stroke="#d97706" stroke-width="2"/>
+    <text x="720" y="152" fill="#92400e">−4</text>
+    <circle cx="650" cy="200" r="20" fill="#fef9c3" stroke="#d97706" stroke-width="2"/>
+    <text x="650" y="207" fill="#92400e">8</text>
+    <circle cx="720" cy="200" r="20" fill="#fef9c3" stroke="#d97706" stroke-width="2"/>
+    <text x="720" y="207" fill="#92400e">11</text>
+  </g>
+
+  <!-- Forbidden zone (bottom) -->
+  <rect x="30" y="310" width="740" height="100" rx="14" fill="#fef2f2" stroke="#ef4444" stroke-width="2"/>
+  <text x="400" y="338" text-anchor="middle" font-size="16" font-weight="700" fill="#dc2626">⛔ ZAKÁZANÉ VSTUPY – nepatří do D(f)</text>
+
+  <!-- Forbidden values with X marks -->
+  <g font-size="17" font-weight="600" text-anchor="middle">
+    <circle cx="120" cy="378" r="20" fill="#fecaca" stroke="#ef4444" stroke-width="2"/>
+    <text x="120" y="384" fill="#dc2626">3</text>
+    <line x1="108" y1="366" x2="132" y2="390" stroke="#dc2626" stroke-width="3"/>
+    <line x1="132" y1="366" x2="108" y2="390" stroke="#dc2626" stroke-width="3"/>
+
+    <text x="210" y="384" fill="#64748b" font-size="13">dělení nulou</text>
+
+    <circle cx="350" cy="378" r="20" fill="#fecaca" stroke="#ef4444" stroke-width="2"/>
+    <text x="350" y="384" fill="#dc2626">−5</text>
+    <line x1="338" y1="366" x2="362" y2="390" stroke="#dc2626" stroke-width="3"/>
+    <line x1="362" y1="366" x2="338" y2="390" stroke="#dc2626" stroke-width="3"/>
+
+    <text x="450" y="384" fill="#64748b" font-size="13">√ ze záporného</text>
+
+    <circle cx="590" cy="378" r="20" fill="#fecaca" stroke="#ef4444" stroke-width="2"/>
+    <text x="590" y="384" fill="#dc2626">−1</text>
+    <line x1="578" y1="366" x2="602" y2="390" stroke="#dc2626" stroke-width="3"/>
+    <line x1="602" y1="366" x2="578" y2="390" stroke="#dc2626" stroke-width="3"/>
+
+    <text x="685" y="384" fill="#64748b" font-size="13">log záporného</text>
+  </g>
+
+  <!-- Big D(f) label -->
+  <rect x="600" y="258" width="170" height="46" rx="10" fill="#ecfdf5" stroke="#10b981" stroke-width="2"/>
+  <text x="685" y="288" text-anchor="middle" font-size="18" font-weight="700" fill="#059669">D(f) = povolená x</text>
+</svg>

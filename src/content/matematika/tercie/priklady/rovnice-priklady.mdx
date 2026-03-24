@@ -1,0 +1,114 @@
+---
+title: "Příklady – Rovnice"
+description: "Příklady k procvičení lineárních rovnic s kroky řešení a PDF tiskem."
+trida: "tercie"
+kategorie: "priklady"
+order: 1
+---
+
+import SelfCheck from '../../../../components/SelfCheck.svelte';
+import StepByStepSolution from '../../../../components/StepByStepSolution.svelte';
+import TestGenerator from '../../../../components/TestGenerator.svelte';
+
+# 📐 Příklady – Lineární rovnice
+
+V této sekci najdeš příklady na lineární rovnice seřazené dle obtížnosti. Každý příklad má nápovědu a postup řešení krok za krokem.
+
+---
+
+## Příklad 1: Jednoduchá rovnice
+
+> 📝 **Zadání:** Vyřeš rovnici $4x - 8 = 12$.
+
+<StepByStepSolution
+  client:load
+  hint="Převeď čísla na pravou stranu a pak vyděl koeficientem u <em>x</em>."
+  steps={[
+    "Zapíšeme rovnici: <strong>4x - 8 = 12</strong>.",
+    "Přičteme 8 k oběma stranám: <strong>4x = 12 + 8 = 20</strong>.",
+    "Vydělíme obě strany číslem 4: <strong>x = 20 ÷ 4 = 5</strong>.",
+    "<strong>Zkouška:</strong> 4 · 5 - 8 = 20 - 8 = 12 ✓",
+    "<strong>Odpověď:</strong> x = <strong>5</strong>."
+  ]}
+/>
+
+---
+
+## Příklad 2: Rovnice se závorkami
+
+> 📝 **Zadání:** Vyřeš rovnici $3(2x - 1) = 4x + 7$.
+
+<StepByStepSolution
+  client:load
+  hint="Nejprve roznásob závorku na levé straně, pak převeď neznámé na jednu stranu."
+  steps={[
+    "Roznásobíme závorku: <strong>6x - 3 = 4x + 7</strong>.",
+    "Odečteme 4x od obou stran: <strong>2x - 3 = 7</strong>.",
+    "Přičteme 3 k oběma stranám: <strong>2x = 10</strong>.",
+    "Vydělíme obě strany číslem 2: <strong>x = 5</strong>.",
+    "<strong>Zkouška:</strong> L = 3(2·5 - 1) = 3·9 = 27, P = 4·5 + 7 = 27 ✓",
+    "<strong>Odpověď:</strong> x = <strong>5</strong>."
+  ]}
+/>
+
+---
+
+## Příklad 3: Rovnice se zlomky
+
+> 📝 **Zadání:** Vyřeš rovnici $\frac{x}{2} + \frac{x}{3} = 10$.
+
+<StepByStepSolution
+  client:load
+  hint="Najdi nejmenší společný násobek jmenovatelů (NSN) a vynásob jím celou rovnici."
+  steps={[
+    "NSN(2, 3) = <strong>6</strong>.",
+    "Vynásobíme celou rovnici číslem 6: <strong>3x + 2x = 60</strong>.",
+    "Sečteme: <strong>5x = 60</strong>.",
+    "Vydělíme: <strong>x = 12</strong>.",
+    "<strong>Zkouška:</strong> 12/2 + 12/3 = 6 + 4 = 10 ✓",
+    "<strong>Odpověď:</strong> x = <strong>12</strong>."
+  ]}
+/>
+
+---
+
+## Příklad 4: Slovní úloha
+
+> 📝 **Zadání:** Petr je o 4 roky starší než Jana. Součet jejich věků je 28 let. Kolik je komu let?
+
+<StepByStepSolution
+  client:load
+  hint="Označ věk Jany jako <em>x</em>. Petrův věk pak bude <em>x + 4</em>."
+  steps={[
+    "Označíme: věk Jany = <strong>x</strong>, věk Petra = <strong>x + 4</strong>.",
+    "Sestavíme rovnici: <strong>x + (x + 4) = 28</strong>.",
+    "Zjednodušíme: <strong>2x + 4 = 28</strong>.",
+    "Odečteme 4: <strong>2x = 24</strong>.",
+    "Vydělíme: <strong>x = 12</strong>.",
+    "Jana má 12 let, Petr má 12 + 4 = 16 let.",
+    "<strong>Zkouška:</strong> 12 + 16 = 28 ✓, 16 - 12 = 4 ✓",
+    "<strong>Odpověď:</strong> Janě je <strong>12 let</strong>, Petrovi je <strong>16 let</strong>."
+  ]}
+/>
+
+---
+
+## Příklad 5: Rovnice s neznámou na obou stranách
+
+> 📝 **Zadání:** Vyřeš rovnici $7x - 5 = 3x + 15$.
+
+<StepByStepSolution
+  client:load
+  hint="Převeď všechny členy s <em>x</em> na jednu stranu a čísla na druhou."
+  steps={[
+    "Odečteme 3x od obou stran: <strong>4x - 5 = 15</strong>.",
+    "Přičteme 5 k oběma stranám: <strong>4x = 20</strong>.",
+    "Vydělíme: <strong>x = 5</strong>.",
+    "<strong>Zkouška:</strong> L = 7·5 - 5 = 30, P = 3·5 + 15 = 30 ✓",
+    "<strong>Odpověď:</strong> x = <strong>5</strong>."
+  ]}
+/>
+
+---
+
+<SelfCheck client:load id="tercie-rovnice-priklady" label="Umím řešit lineární rovnice různých typů." />

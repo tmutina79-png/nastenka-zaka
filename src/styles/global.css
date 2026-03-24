@@ -1,0 +1,270 @@
+@import "tailwindcss";
+
+/* ---------- KaTeX ---------- */
+@import "katex/dist/katex.min.css";
+
+/* ---------- Theme tokens (Tailwind v4 @theme) ---------- */
+/* All colors defined as HEX for maximum browser compatibility (no oklch). */
+@theme {
+  /* Primary */
+  --color-primary-50: #eff6ff;
+  --color-primary-100: #dbeafe;
+  --color-primary-200: #bfdbfe;
+  --color-primary-300: #93c5fd;
+  --color-primary-400: #60a5fa;
+  --color-primary-500: #3b82f6;
+  --color-primary-600: #1e3a5f;
+  --color-primary-700: #1e3a8a;
+  --color-primary-800: #1e2d5b;
+  --color-primary-900: #0f172a;
+  --color-accent: #2563eb;
+  --color-success: #16a34a;
+  --color-danger: #dc2626;
+
+  /* Gray */
+  --color-gray-50: #f9fafb;
+  --color-gray-100: #f3f4f6;
+  --color-gray-200: #e5e7eb;
+  --color-gray-300: #d1d5db;
+  --color-gray-400: #9ca3af;
+  --color-gray-500: #6b7280;
+  --color-gray-600: #4b5563;
+  --color-gray-700: #374151;
+  --color-gray-800: #1f2937;
+  --color-gray-900: #111827;
+
+  /* Red */
+  --color-red-50: #fef2f2;
+  --color-red-200: #fecaca;
+  --color-red-700: #b91c1c;
+
+  /* Amber */
+  --color-amber-50: #fffbeb;
+  --color-amber-100: #fef3c7;
+  --color-amber-200: #fde68a;
+  --color-amber-300: #fcd34d;
+  --color-amber-400: #fbbf24;
+  --color-amber-500: #f59e0b;
+  --color-amber-600: #d97706;
+  --color-amber-700: #b45309;
+  --color-amber-800: #92400e;
+  --color-amber-900: #78350f;
+
+  /* Green */
+  --color-green-50: #f0fdf4;
+  --color-green-100: #dcfce7;
+  --color-green-200: #bbf7d0;
+  --color-green-400: #4ade80;
+  --color-green-500: #22c55e;
+  --color-green-600: #16a34a;
+  --color-green-700: #15803d;
+  --color-green-800: #166534;
+  --color-green-900: #14532d;
+
+  /* Emerald */
+  --color-emerald-50: #ecfdf5;
+  --color-emerald-100: #d1fae5;
+  --color-emerald-200: #a7f3d0;
+  --color-emerald-700: #047857;
+
+  /* Teal */
+  --color-teal-50: #f0fdfa;
+  --color-teal-200: #99f6e4;
+  --color-teal-700: #0f766e;
+
+  /* Sky */
+  --color-sky-50: #f0f9ff;
+  --color-sky-100: #e0f2fe;
+  --color-sky-200: #bae6fd;
+  --color-sky-700: #0369a1;
+
+  /* Blue */
+  --color-blue-50: #eff6ff;
+  --color-blue-100: #dbeafe;
+  --color-blue-200: #bfdbfe;
+  --color-blue-400: #60a5fa;
+  --color-blue-600: #2563eb;
+  --color-blue-700: #1d4ed8;
+  --color-blue-800: #1e40af;
+  --color-blue-900: #1e3a8a;
+
+  /* Indigo */
+  --color-indigo-50: #eef2ff;
+  --color-indigo-100: #e0e7ff;
+  --color-indigo-200: #c7d2fe;
+  --color-indigo-500: #6366f1;
+  --color-indigo-600: #4f46e5;
+  --color-indigo-700: #4338ca;
+  --color-indigo-800: #3730a3;
+
+  /* Violet */
+  --color-violet-50: #f5f3ff;
+  --color-violet-100: #ede9fe;
+  --color-violet-200: #ddd6fe;
+  --color-violet-600: #7c3aed;
+  --color-violet-700: #6d28d9;
+
+  /* Purple */
+  --color-purple-600: #9333ea;
+
+  /* Rose */
+  --color-rose-50: #fff1f2;
+  --color-rose-100: #ffe4e6;
+  --color-rose-200: #fecdd3;
+  --color-rose-700: #be123c;
+
+  /* Black & White are already hex in Tailwind */
+}
+
+/* ---------- Base ---------- */
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 70px; /* Offset for sticky header */
+  overflow-x: hidden; /* Prevent horizontal scroll on mobile */
+}
+
+body {
+  @apply bg-white text-primary-900 font-sans leading-relaxed;
+  overflow-x: hidden;
+  -webkit-text-size-adjust: 100%;
+}
+
+/* ---------- Mobile sidebar overlay ---------- */
+.sidebar-open {
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 45 !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  height: 100vh !important;
+  top: 0 !important;
+}
+.sidebar-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 44;
+  background: rgba(0,0,0,0.5);
+  -webkit-backdrop-filter: blur(2px);
+  backdrop-filter: blur(2px);
+}
+.sidebar-backdrop.active {
+  display: block;
+}
+
+/* ---------- Mobile content fixes ---------- */
+@media (max-width: 767px) {
+  .prose img, .prose svg {
+    max-width: 100%;
+    height: auto;
+  }
+  .prose .katex-display {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .prose table {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+/* ---------- Prose (lesson content) ---------- */
+.prose h1 { @apply text-3xl font-bold mt-8 mb-4 text-primary-700; }
+.prose h2 { @apply text-2xl font-semibold mt-6 mb-3 text-primary-700; }
+.prose h3 { @apply text-xl font-semibold mt-4 mb-2 text-primary-600; }
+.prose p  { @apply mb-4; }
+.prose ul { @apply list-disc pl-6 mb-4; }
+.prose ol { @apply list-decimal pl-6 mb-4; }
+.prose li { @apply mb-1; }
+.prose code { @apply bg-primary-100 text-primary-800 rounded px-1.5 py-0.5 text-sm; }
+.prose pre { @apply bg-primary-900 text-primary-100 rounded-lg p-4 mb-4 overflow-x-auto; }
+.prose pre code { @apply bg-transparent text-inherit p-0; }
+.prose blockquote { @apply border-l-4 border-primary-400 pl-4 italic text-primary-600 mb-4; }
+.prose a { @apply text-accent underline hover:text-primary-500; }
+.prose hr { @apply border-primary-200 my-8; }
+
+/* Tables */
+.prose table { 
+  @apply w-full mb-6 border-collapse rounded-lg overflow-hidden;
+  border: 2px solid var(--color-primary-300);
+}
+.prose th { 
+  @apply bg-primary-100 text-primary-700 font-semibold text-left px-4 py-2;
+  border: 1px solid var(--color-primary-200);
+}
+.prose td { 
+  @apply px-4 py-2;
+  border: 1px solid var(--color-primary-200);
+}
+.prose tr:nth-child(even) { @apply bg-primary-50; }
+.prose tr:hover { @apply bg-primary-100; }
+
+/* KaTeX blocks */
+.prose .katex-display { @apply my-6 overflow-x-auto; }
+
+/* ---------- Zoom-fullscreen on click ---------- */
+.zoom-fullscreen {
+  cursor: zoom-in;
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 12px;
+}
+.zoom-fullscreen.zoomed {
+  position: fixed;
+  inset: 3vh 3vw;
+  width: 94vw;
+  height: 94vh;
+  object-fit: contain;
+  z-index: 9999;
+  background: rgba(0, 0, 0, 0.85);
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 0 80px rgba(0, 0, 0, 0.7);
+  cursor: zoom-out;
+}
+
+/* ---------- Opacity color fallbacks (for browsers without color-mix) ---------- */
+.bg-black\/60 { background-color: rgba(0,0,0,0.6); }
+.bg-black\/80 { background-color: rgba(0,0,0,0.8); }
+.hover\:bg-white\/20:hover { background-color: rgba(255,255,255,0.2); }
+
+/* ---------- Projector / HDMI display mode ---------- */
+/* Optimized for classroom projection – high contrast, larger text */
+@media (min-width: 1024px) {
+  .prose {
+    font-size: 1.125rem;
+    line-height: 1.8;
+  }
+  .prose h1 { font-size: 2.25rem; }
+  .prose h2 { font-size: 1.75rem; }
+  .prose h3 { font-size: 1.375rem; }
+  .prose p, .prose li {
+    color: #1e293b;
+    font-weight: 400;
+  }
+  .prose strong {
+    font-weight: 700;
+    color: #0f172a;
+  }
+  .prose code {
+    font-size: 1rem;
+    padding: 2px 6px;
+  }
+  /* Make math equations larger for back-of-room readability */
+  .prose .katex { font-size: 1.15em; }
+  .prose .katex-display { font-size: 1.25em; }
+}
+
+/* Explicit projector utility class – add to <body> or container for max readability */
+.projector-mode .prose {
+  font-size: 1.25rem;
+  line-height: 1.9;
+  max-width: 900px;
+}
+.projector-mode .prose h1 { font-size: 2.5rem; letter-spacing: -0.01em; }
+.projector-mode .prose h2 { font-size: 2rem; }
+.projector-mode .prose h3 { font-size: 1.5rem; }
+.projector-mode .prose p,
+.projector-mode .prose li { font-size: 1.2rem; color: #0f172a; }
+.projector-mode .prose .katex { font-size: 1.3em; }
+.projector-mode .prose .katex-display { font-size: 1.4em; }

@@ -1,0 +1,1049 @@
+---
+const baseUrl = import.meta.env.BASE_URL;
+const base = baseUrl.endsWith('/') ? baseUrl : baseUrl + '/';
+---
+
+<!doctype html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Prezentace – Množina bodů daných vlastností</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap');
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --primary: #4338ca;
+      --primary-light: #eef2ff;
+      --accent: #e11d48;
+      --success: #16a34a;
+      --bg: #f8fafc;
+      --text: #1e293b;
+      --text-muted: #64748b;
+    }
+
+    html, body {
+      height: 100%; overflow: hidden;
+      font-family: 'Inter', system-ui, sans-serif;
+      background: linear-gradient(135deg, #eef2ff 0%, #faf5ff 50%, #fff1f2 100%);
+      color: var(--text);
+    }
+
+    .presentation { position: relative; width: 100%; height: 100vh; overflow: hidden; }
+
+    .slide {
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      padding: 2rem 2.5rem;
+      opacity: 0; transform: translateX(60px);
+      transition: opacity 0.45s ease, transform 0.45s ease;
+      pointer-events: none;
+      overflow-y: auto;
+    }
+    .slide.active { opacity: 1; transform: translateX(0); pointer-events: auto; }
+    .slide.prev { opacity: 0; transform: translateX(-60px); }
+
+    .slide-inner {
+      max-width: 900px; width: 100%;
+      display: flex; flex-direction: column; align-items: center; gap: 1.5rem;
+    }
+
+    h1 {
+      font-size: clamp(1.8rem, 5vw, 3.2rem); font-weight: 900; text-align: center; line-height: 1.15;
+      background: linear-gradient(135deg, #4338ca 0%, #7c3aed 50%, #db2777 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    h2 { font-size: clamp(1.4rem, 3.5vw, 2.2rem); font-weight: 700; text-align: center; color: #4338ca; }
+    h3 { font-size: clamp(1rem, 2.5vw, 1.5rem); font-weight: 600; color: #6366f1; text-align: center; }
+    p, li { font-size: clamp(0.95rem, 2vw, 1.2rem); line-height: 1.7; color: var(--text); }
+    .subtitle { color: var(--text-muted); font-size: clamp(1rem, 2.5vw, 1.4rem); text-align: center; }
+    .emoji-big { font-size: clamp(3rem, 8vw, 5rem); filter: drop-shadow(0 4px 8px rgba(99,102,241,0.2)); }
+    .highlight { color: #b45309; font-weight: 700; }
+    .accent { color: var(--accent); font-weight: 700; }
+    .success { color: var(--success); font-weight: 700; }
+
+    .card {
+      background: white; border: 1px solid #e2e8f0;
+      border-radius: 1rem; padding: 1.5rem 2rem; width: 100%;
+      box-shadow: 0 4px 20px rgba(99,102,241,0.07), 0 1px 3px rgba(0,0,0,0.04);
+      transition: box-shadow 0.2s;
+    }
+    .card-accent { background: linear-gradient(135deg, #eef2ff, #f5f3ff); border-color: #c7d2fe; }
+    .card-warning { background: linear-gradient(135deg, #fff1f2, #fef2f2); border-color: #fecdd3; }
+    .card-success { background: linear-gradient(135deg, #f0fdf4, #ecfdf5); border-color: #bbf7d0; }
+
+    .definition {
+      background: linear-gradient(135deg, #eef2ff, #f5f3ff);
+      border-left: 4px solid #6366f1;
+      border-radius: 0 1rem 1rem 0;
+      padding: 1.25rem 1.5rem;
+      width: 100%;
+      font-size: clamp(0.95rem, 2vw, 1.15rem);
+      box-shadow: 0 2px 12px rgba(99,102,241,0.06);
+    }
+
+    table { width: 100%; border-collapse: collapse; font-size: clamp(0.85rem, 1.8vw, 1.05rem); }
+    th { background: linear-gradient(135deg, #eef2ff, #ede9fe); padding: 0.75rem 1rem; text-align: left; font-weight: 700; border-radius: 0.5rem 0.5rem 0 0; color: #4338ca; }
+    td { padding: 0.6rem 1rem; border-bottom: 1px solid #e2e8f0; }
+    tr:last-child td { border-bottom: none; }
+
+    .diagram { max-width: 400px; width: 100%; margin: 0 auto; background: white; border-radius: 1rem; padding: 1rem; box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
+    .diagram svg { width: 100%; height: auto; }
+
+    .quiz-options { display: grid; gap: 0.75rem; width: 100%; max-width: 600px; }
+    .quiz-btn {
+      all: unset; cursor: pointer;
+      display: flex; align-items: center; gap: 0.75rem;
+      padding: 0.9rem 1.2rem; border-radius: 0.75rem;
+      border: 2px solid #e2e8f0;
+      background: white;
+      transition: all 0.2s;
+      font-size: clamp(0.9rem, 1.8vw, 1.05rem);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+    }
+    .quiz-btn:hover { border-color: #818cf8; background: #eef2ff; box-shadow: 0 4px 15px rgba(99,102,241,0.12); transform: translateY(-1px); }
+    .quiz-btn.correct { border-color: var(--success); background: #f0fdf4; box-shadow: 0 4px 15px rgba(22,163,74,0.15); }
+    .quiz-btn.wrong { border-color: var(--accent); background: #fff1f2; }
+    .quiz-btn .label {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 2rem; height: 2rem; border-radius: 50%;
+      background: #eef2ff; color: #4338ca; font-weight: 700; font-size: 0.9rem; flex-shrink: 0;
+    }
+    .quiz-btn.correct .label { background: var(--success); color: white; }
+    .quiz-btn.wrong .label { background: var(--accent); color: white; }
+    .quiz-feedback { text-align: center; padding: 0.75rem; border-radius: 0.75rem; font-weight: 600; margin-top: 0.5rem; }
+    .quiz-feedback.ok { background: #f0fdf4; color: #16a34a; }
+    .quiz-feedback.nok { background: #fff1f2; color: #e11d48; }
+
+    .nav-bar {
+      position: fixed; bottom: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0.6rem 1.5rem;
+      background: rgba(255,255,255,0.85); backdrop-filter: blur(16px);
+      border-top: 1px solid #e2e8f0;
+      box-shadow: 0 -2px 10px rgba(0,0,0,0.04);
+    }
+    .nav-btn {
+      all: unset; cursor: pointer;
+      padding: 0.5rem 1.2rem; border-radius: 0.5rem;
+      font-weight: 600; font-size: 0.95rem;
+      background: #eef2ff; color: #4338ca;
+      transition: all 0.2s;
+    }
+    .nav-btn:hover { background: #c7d2fe; }
+    .nav-btn:disabled { opacity: 0.3; cursor: default; }
+    .progress-bar { flex: 1; height: 4px; background: #e2e8f0; border-radius: 2px; margin: 0 1rem; }
+    .progress-fill { height: 100%; background: linear-gradient(90deg, #6366f1, #a855f7, #ec4899); border-radius: 2px; transition: width 0.3s; }
+    .slide-counter { font-size: 0.8rem; color: var(--text-muted); min-width: 3rem; text-align: center; }
+
+    .back-link {
+      position: fixed; top: 1rem; left: 1rem; z-index: 110;
+      color: var(--text-muted); text-decoration: none; font-size: 0.85rem;
+      display: flex; align-items: center; gap: 0.3rem;
+      opacity: 0.6; transition: all 0.2s;
+    }
+    .back-link:hover { opacity: 1; color: #4338ca; }
+
+    .qr-container { display: flex; flex-direction: column; align-items: center; gap: 0.5rem; margin-top: 1rem; }
+    .qr-container img { width: 140px; height: 140px; border-radius: 0.75rem; background: white; padding: 0.5rem; box-shadow: 0 4px 16px rgba(99,102,241,0.12); }
+    .qr-label { font-size: 0.8rem; color: var(--text-muted); }
+
+    .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; width: 100%; }
+    @media (max-width: 640px) { .cols { grid-template-columns: 1fr; } }
+
+    ul, ol { padding-left: 1.5rem; }
+    li { margin-bottom: 0.4rem; }
+    li::marker { color: #6366f1; }
+
+    .step-box {
+      display: flex; align-items: flex-start; gap: 0.75rem;
+      background: #f8fafc; border: 1px solid #e2e8f0;
+      border-radius: 0.75rem; padding: 0.75rem 1rem;
+      width: 100%;
+    }
+    .step-box + .step-box { margin-top: 0.5rem; }
+    .step-num {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 1.8rem; height: 1.8rem; border-radius: 50%;
+      background: linear-gradient(135deg, #6366f1, #8b5cf6); color: white; font-weight: 700; font-size: 0.85rem; flex-shrink: 0;
+      box-shadow: 0 2px 6px rgba(99,102,241,0.3);
+    }
+  </style>
+</head>
+<body>
+  <a href={`${base}docs/mnozina-bodu`} class="back-link">← zpět na lekci</a>
+
+  <div class="presentation" id="presentation">
+
+    <!-- ===== SLIDE 0: Titulní ===== -->
+    <div class="slide active" data-slide="0">
+      <div class="slide-inner">
+        <div class="emoji-big">📐</div>
+        <h1>Množina bodů<br>daných vlastností</h1>
+        <p class="subtitle">Tercie · Matematika</p>
+        <div class="qr-container">
+          <img src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&amp;data=https%3A%2F%2Ftmutina79-png.github.io%2Fmatematika-nastenka%2Fprezentace%2Fmnozina-bodu" alt="QR kód prezentace" />
+          <span class="qr-label">📱 Naskenuj a sleduj na tabletu nebo mobilu</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== SLIDE 1: O co jde? ===== -->
+    <div class="slide" data-slide="1">
+      <div class="slide-inner">
+        <h2>1. O co jde?</h2>
+        <div class="definition">
+          💡 <strong>Množina bodů</strong> = všechny body v rovině, které mají společnou vlastnost<br>(např. stejnou vzdálenost od bodu, od přímky, od dvou bodů…)
+        </div>
+        <div class="card">
+          <h3>Kde se s tím setkáme?</h3>
+          <ul>
+            <li>📡 Dosah WiFi routeru → <span class="highlight">kružnice</span></li>
+            <li>🚿 Studna mezi dvěma domy → <span class="highlight">osa úsečky</span></li>
+            <li>🛤️ Ochranné pásmo u kolejí → <span class="highlight">rovnoběžky</span></li>
+            <li>📹 Kamera na rohu budovy → <span class="highlight">osa úhlu</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== SLIDE 2: Princip – ilustrace ===== -->
+    <div class="slide" data-slide="2">
+      <div class="slide-inner">
+        <h2>Princip množiny bodů</h2>
+        <div class="card">
+          <img src={`${base}img/mnozina-bodu-princip.svg`} alt="Princip množiny bodů" style="width:100%;max-width:600px;display:block;margin:0 auto;border-radius:0.75rem" />
+        </div>
+        <p style="text-align:center;color:var(--text-muted);font-size:0.95rem">Různé množiny bodů – kružnice, osa úsečky, rovnoběžky.</p>
+      </div>
+    </div>
+
+    <!-- ===== SLIDE 3: Kde se s tím setkáš v praxi? ===== -->
+    <div class="slide" data-slide="3">
+      <div class="slide-inner">
+        <h2>Kde se s tím setkáš v praxi?</h2>
+        <div class="cols">
+          <!-- WiFi router = kružnice -->
+          <div class="card" style="padding:1rem 1.2rem">
+            <h3 style="font-size:0.95rem;margin-bottom:0.5rem">📡 Dosah WiFi</h3>
+            <svg viewBox="0 0 200 140" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:200px;margin:0 auto;display:block">
+              <rect width="200" height="140" rx="8" fill="#f8fafc"/>
+              <rect x="94" y="60" width="12" height="16" fill="#374151" rx="2"/>
+              <line x1="97" y1="60" x2="94" y2="48" stroke="#374151" stroke-width="1.5"/>
+              <line x1="100" y1="60" x2="100" y2="45" stroke="#374151" stroke-width="1.5"/>
+              <line x1="103" y1="60" x2="106" y2="48" stroke="#374151" stroke-width="1.5"/>
+              <circle cx="100" cy="68" r="20" fill="none" stroke="#22c55e" stroke-width="2" stroke-dasharray="4,2"/>
+              <circle cx="100" cy="68" r="38" fill="none" stroke="#eab308" stroke-width="2" stroke-dasharray="4,2"/>
+              <circle cx="100" cy="68" r="55" fill="none" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="4,2" opacity="0.6"/>
+              <text x="100" y="135" text-anchor="middle" font-size="11" fill="#6366f1" font-weight="600" font-family="Inter">= kružnice</text>
+            </svg>
+          </div>
+          <!-- Studna = osa úsečky -->
+          <div class="card" style="padding:1rem 1.2rem">
+            <h3 style="font-size:0.95rem;margin-bottom:0.5rem">🏠 Kde vykopat studnu?</h3>
+            <svg viewBox="0 0 200 140" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:200px;margin:0 auto;display:block">
+              <rect width="200" height="140" rx="8" fill="#f0fdf4"/>
+              <rect x="30" y="55" width="26" height="22" fill="#fbbf24"/>
+              <polygon points="30,55 43,42 56,55" fill="#dc2626"/>
+              <rect x="39" y="62" width="8" height="15" fill="#78350f"/>
+              <text x="43" y="92" text-anchor="middle" font-size="11" fill="#1e293b" font-weight="bold" font-family="Inter">A</text>
+              <rect x="140" y="55" width="26" height="22" fill="#fbbf24"/>
+              <polygon points="140,55 153,42 166,55" fill="#dc2626"/>
+              <rect x="149" y="62" width="8" height="15" fill="#78350f"/>
+              <text x="153" y="92" text-anchor="middle" font-size="11" fill="#1e293b" font-weight="bold" font-family="Inter">B</text>
+              <line x1="98" y1="30" x2="98" y2="115" stroke="#6366f1" stroke-width="3" stroke-dasharray="8,4"/>
+              <circle cx="98" cy="68" r="7" fill="#0ea5e9" stroke="#0369a1" stroke-width="1.5"/>
+              <text x="98" y="71" text-anchor="middle" font-size="7" fill="white" font-weight="bold" font-family="Inter">💧</text>
+              <text x="98" y="135" text-anchor="middle" font-size="11" fill="#6366f1" font-weight="600" font-family="Inter">= osa úsečky</text>
+            </svg>
+          </div>
+        </div>
+        <div class="cols">
+          <!-- Koleje = rovnoběžky -->
+          <div class="card" style="padding:1rem 1.2rem">
+            <h3 style="font-size:0.95rem;margin-bottom:0.5rem">🛤️ Ochranné pásmo tratě</h3>
+            <svg viewBox="0 0 200 140" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:200px;margin:0 auto;display:block">
+              <rect width="200" height="140" rx="8" fill="#f8fafc"/>
+              <rect x="10" y="62" width="180" height="16" fill="#94a3b8" rx="2"/>
+              <line x1="30" y1="66" x2="30" y2="74" stroke="#64748b" stroke-width="2"/>
+              <line x1="60" y1="66" x2="60" y2="74" stroke="#64748b" stroke-width="2"/>
+              <line x1="90" y1="66" x2="90" y2="74" stroke="#64748b" stroke-width="2"/>
+              <line x1="120" y1="66" x2="120" y2="74" stroke="#64748b" stroke-width="2"/>
+              <line x1="150" y1="66" x2="150" y2="74" stroke="#64748b" stroke-width="2"/>
+              <line x1="10" y1="38" x2="190" y2="38" stroke="#e11d48" stroke-width="2.5" stroke-dasharray="8,4"/>
+              <line x1="10" y1="102" x2="190" y2="102" stroke="#e11d48" stroke-width="2.5" stroke-dasharray="8,4"/>
+              <line x1="50" y1="70" x2="50" y2="38" stroke="#d97706" stroke-width="1" stroke-dasharray="3,2"/>
+              <text x="56" y="55" font-size="9" fill="#d97706" font-weight="600" font-family="Inter">50 m</text>
+              <line x1="50" y1="70" x2="50" y2="102" stroke="#d97706" stroke-width="1" stroke-dasharray="3,2"/>
+              <text x="56" y="92" font-size="9" fill="#d97706" font-weight="600" font-family="Inter">50 m</text>
+              <text x="100" y="135" text-anchor="middle" font-size="11" fill="#6366f1" font-weight="600" font-family="Inter">= dvě rovnoběžky</text>
+            </svg>
+          </div>
+          <!-- Kamera = osa úhlu -->
+          <div class="card" style="padding:1rem 1.2rem">
+            <h3 style="font-size:0.95rem;margin-bottom:0.5rem">📹 Kamera na rohu</h3>
+            <svg viewBox="0 0 200 140" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:200px;margin:0 auto;display:block">
+              <rect width="200" height="140" rx="8" fill="#fefce8"/>
+              <line x1="30" y1="30" x2="30" y2="115" stroke="#78350f" stroke-width="4"/>
+              <line x1="30" y1="115" x2="180" y2="115" stroke="#78350f" stroke-width="4"/>
+              <polygon points="30,115 130,30" fill="none" stroke="#6366f1" stroke-width="2.5" stroke-dasharray="8,4"/>
+              <line x1="30" y1="115" x2="130" y2="30" stroke="#6366f1" stroke-width="2.5" stroke-dasharray="8,4"/>
+              <circle cx="70" cy="82" r="6" fill="#0ea5e9" stroke="#0369a1" stroke-width="1.5"/>
+              <text x="70" y="85" text-anchor="middle" font-size="7" fill="white" font-weight="bold" font-family="Inter">📹</text>
+              <line x1="70" y1="82" x2="30" y2="82" stroke="#d97706" stroke-width="1" stroke-dasharray="3,2"/>
+              <line x1="70" y1="82" x2="70" y2="115" stroke="#d97706" stroke-width="1" stroke-dasharray="3,2"/>
+              <text x="48" y="78" font-size="8" fill="#d97706" font-weight="600" font-family="Inter">d</text>
+              <text x="75" y="103" font-size="8" fill="#d97706" font-weight="600" font-family="Inter">d</text>
+              <text x="100" y="135" text-anchor="middle" font-size="11" fill="#6366f1" font-weight="600" font-family="Inter">= osa úhlu</text>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== SLIDE 4: Praktické příklady – ilustrace ===== -->
+    <div class="slide" data-slide="4">
+      <div class="slide-inner">
+        <h2>Množiny bodů v praxi</h2>
+        <div class="card">
+          <img src={`${base}img/mnozina-bodu-praxe.svg`} alt="Množiny bodů v praxi" style="width:100%;max-width:650px;display:block;margin:0 auto;border-radius:0.75rem" />
+        </div>
+        <p style="text-align:center;color:var(--text-muted);font-size:0.95rem">Dosah WiFi, umístění studny, železniční koleje a další.</p>
+      </div>
+    </div>
+
+    <!-- ===== SLIDE 5: Kružnice – definice ===== -->
+    <div class="slide" data-slide="5">
+      <div class="slide-inner">
+        <h2>2. Kružnice</h2>
+        <div class="diagram">
+          <svg viewBox="0 0 300 280" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="150" cy="130" r="95" fill="none" stroke="#6366f1" stroke-width="3" stroke-dasharray="8,4"/>
+            <circle cx="150" cy="130" r="5" fill="#d97706"/>
+            <text x="162" y="128" font-size="16" fill="#d97706" font-weight="bold" font-family="Inter">S</text>
+            <line x1="150" y1="130" x2="245" y2="130" stroke="#e11d48" stroke-width="2" stroke-dasharray="5,3"/>
+            <text x="190" y="120" font-size="14" fill="#e11d48" font-weight="600" font-family="Inter">r</text>
+            <circle cx="245" cy="130" r="4" fill="#e11d48"/>
+            <text x="250" y="128" font-size="14" fill="#e11d48" font-family="Inter">X</text>
+            <text x="150" y="265" font-size="13" fill="#64748b" text-anchor="middle" font-family="Inter">k(S, r) = všechny body X, kde |SX| = r</text>
+          </svg>
+        </div>
+        <div class="definition">
+          <strong>Kružnice k(S, r)</strong> je množina všech bodů v rovině, které mají od středu S <span class="highlight">stejnou vzdálenost r</span> (poloměr).
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== SLIDE 6: Kružnice – ilustrace ===== -->
+    <div class="slide" data-slide="6">
+      <div class="slide-inner">
+        <h2>Kružnice – ilustrace</h2>
+        <div class="card">
+          <img src={`${base}img/mnozina-bodu-kruznice.svg`} alt="Kružnice jako množina bodů" style="width:100%;max-width:500px;display:block;margin:0 auto;border-radius:0.75rem" />
+        </div>
+        <p style="text-align:center;color:var(--text-muted);font-size:0.95rem">Kružnice – všechny body ve vzdálenosti r od středu S.</p>
+      </div>
+    </div>
+
+    <!-- ===== SLIDE 7: Kružnice – klíčové pojmy ===== -->
+    <div class="slide" data-slide="7">
+      <div class="slide-inner">
+        <h2>Kružnice – klíčové pojmy</h2>
+        <div class="card" style="overflow-x:auto">
+          <table>
+            <thead>
+              <tr><th>Pojem</th><th>Vysvětlení</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><span class="highlight">Střed S</span></td><td>Bod, od kterého měříme vzdálenost</td></tr>
+              <tr><td><span class="highlight">Poloměr r</span></td><td>Vzdálenost bodů kružnice od středu</td></tr>
+              <tr><td><span class="highlight">Průměr d</span></td><td>d = 2r (dvojnásobek poloměru)</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="definition">
+          Zápis: <strong>k(S, r)</strong> = {'{ X ∈ rovina : |SX| = r }'}
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== SLIDE 8: Kružnice – modelové ukázky ===== -->
+    <div class="slide" data-slide="8">
+      <div class="slide-inner">
+        <h2>📖 Kružnice – modelové ukázky</h2>
+        <div class="cols">
+          <div class="card" style="padding:0.75rem">
+            <img src={`${base}img/kruznice-1.png`} alt="Kružnice – pojmy a značení" style="width:100%;border-radius:0.5rem" />
+            <p style="text-align:center;font-size:0.85rem;margin-top:0.5rem;color:#4338ca;font-weight:600">Kružnice – pojmy a značení</p>
+          </div>
+          <div class="card" style="padding:0.75rem">
+            <img src={`${base}img/kruznice-2.png`} alt="Kružnice – další pojmy" style="width:100%;border-radius:0.5rem" />
+            <p style="text-align:center;font-size:0.85rem;margin-top:0.5rem;color:#7c3aed;font-weight:600">Kružnice – další pojmy</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== SLIDE 9: Kružnice vs kruh ===== -->
+    <div class="slide" data-slide="9">
+      <div class="slide-inner">
+        <h2>⚠️ Pozor: Kružnice ≠ Kruh</h2>
+        <div class="cols">
+          <div class="card">
+            <h3>Kružnice</h3>
+            <svg viewBox="0 0 180 180" xmlns="http://www.w3.org/2000/svg" style="width:160px;margin:0 auto;display:block">
+              <circle cx="90" cy="90" r="70" fill="none" stroke="#6366f1" stroke-width="4"/>
+              <circle cx="90" cy="90" r="4" fill="#d97706"/>
+            </svg>
+            <p style="text-align:center;margin-top:0.5rem">Jen „obrys"<br><span class="accent">body na obvodu</span></p>
+          </div>
+          <div class="card">
+            <h3>Kruh</h3>
+            <svg viewBox="0 0 180 180" xmlns="http://www.w3.org/2000/svg" style="width:160px;margin:0 auto;display:block">
+              <circle cx="90" cy="90" r="70" fill="rgba(99,102,241,0.15)" stroke="#6366f1" stroke-width="4"/>
+              <circle cx="90" cy="90" r="4" fill="#d97706"/>
+            </svg>
+            <p style="text-align:center;margin-top:0.5rem">Obrys + vnitřek<br><span class="success">|SX| ≤ r</span></p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== SLIDE 10: KVÍZ – Kružnice ===== -->
+    <div class="slide" data-slide="10">
+      <div class="slide-inner">
+        <h2>🧠 Kvíz</h2>
+        <p style="text-align:center;font-size:1.15rem"><strong>Co je kružnice?</strong></p>
+        <div class="quiz-options" id="quiz1">
+          <button class="quiz-btn" data-idx="0" onclick="checkQuiz('quiz1', 0, 1)">
+            <span class="label">A</span><span>Množina bodů uvnitř kruhu</span>
+          </button>
+          <button class="quiz-btn" data-idx="1" onclick="checkQuiz('quiz1', 1, 1)">
+            <span class="label">B</span><span>Množina všech bodů ve stejné vzdálenosti od středu</span>
+          </button>
+          <button class="quiz-btn" data-idx="2" onclick="checkQuiz('quiz1', 2, 1)">
+            <span class="label">C</span><span>Množina bodů na přímce</span>
+          </button>
+          <button class="quiz-btn" data-idx="3" onclick="checkQuiz('quiz1', 3, 1)">
+            <span class="label">D</span><span>Množina bodů mezi dvěma přímkami</span>
+          </button>
+        </div>
+        <div id="quiz1-fb" class="quiz-feedback" style="display:none"></div>
+      </div>
+    </div>
+
+    <!-- ===== SLIDE 11: Osa úsečky – ilustrace ===== -->
+    <div class="slide" data-slide="11">
+      <div class="slide-inner">
+        <h2>Osa úsečky – ilustrace</h2>
+        <div class="card">
+          <img src={`${base}img/mnozina-bodu-osa-usecky.svg`} alt="Osa úsečky" style="width:100%;max-width:500px;display:block;margin:0 auto;border-radius:0.75rem" />
+        </div>
+        <p style="text-align:center;color:var(--text-muted);font-size:0.95rem">Osa úsečky – body stejně vzdálené od A i B.</p>
+      </div>
+    </div>
+
+    <!-- ===== SLIDE 12: Osa úsečky – definice ===== -->
+    <div class="slide" data-slide="12">
+      <div class="slide-inner">
+        <h2>3. Osa úsečky</h2>
+        <div class="diagram">
+          <svg viewBox="0 0 340 250" xmlns="http://www.w3.org/2000/svg">
+            <line x1="50" y1="140" x2="290" y2="140" stroke="#475569" stroke-width="2.5"/>
+            <circle cx="50" cy="140" r="6" fill="#6366f1"/>
+            <text x="38" y="168" font-size="16" fill="#6366f1" font-weight="bold" font-family="Inter">A</text>
+            <circle cx="290" cy="140" r="6" fill="#6366f1"/>
+            <text x="282" y="168" font-size="16" fill="#6366f1" font-weight="bold" font-family="Inter">B</text>
+            <circle cx="170" cy="140" r="4" fill="#d97706"/>
+            <text x="176" y="160" font-size="12" fill="#d97706" font-family="Inter">S</text>
+            <line x1="170" y1="20" x2="170" y2="230" stroke="#e11d48" stroke-width="3" stroke-dasharray="8,4"/>
+            <text x="180" y="40" font-size="14" fill="#e11d48" font-weight="600" font-family="Inter">osa úsečky</text>
+            <text x="100" y="132" font-size="12" fill="#64748b" font-family="Inter">|XA|</text>
+            <text x="215" y="132" font-size="12" fill="#64748b" font-family="Inter">|XB|</text>
+          </svg>
+        </div>
+        <div class="definition">
+          <strong>Osa úsečky AB</strong> je množina všech bodů, které mají od bodů A a B <span class="highlight">stejnou vzdálenost</span>.<br>
+          Je to přímka <strong>kolmá na AB</strong> procházející jejím <strong>středem</strong>.<br>
+          <span style="color:#6366f1;font-weight:600">o<sub>AB</sub> = {'{ X : |XA| = |XB| }'}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== SLIDE 13: Osa úsečky – modelové ukázky ===== -->
+    <div class="slide" data-slide="13">
+      <div class="slide-inner">
+        <h2>📖 Osa úsečky – modelové ukázky</h2>
+        <div class="cols">
+          <div class="card" style="padding:0.75rem">
+            <img src={`${base}img/osa-usecky-1.svg`} alt="Osa úsečky – pojmy a značení" style="width:100%;border-radius:0.5rem" />
+            <p style="text-align:center;font-size:0.85rem;margin-top:0.5rem;color:#4338ca;font-weight:600">Osa úsečky – pojmy a značení</p>
+          </div>
+          <div class="card" style="padding:0.75rem">
+            <img src={`${base}img/osa-usecky-2.svg`} alt="Osa úsečky – konstrukce krok za krokem" style="width:100%;border-radius:0.5rem" />
+            <p style="text-align:center;font-size:0.85rem;margin-top:0.5rem;color:#7c3aed;font-weight:600">Konstrukce osy úsečky – krok za krokem</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== SLIDE 14: Osa úsečky – vlastnosti + konstrukce ===== -->
+    <div class="slide" data-slide="14">
+      <div class="slide-inner">
+        <h2>Osa úsečky – vlastnosti a konstrukce</h2>
+        <div class="card card-accent">
+          <h3>📌 Vlastnosti</h3>
+          <ol>
+            <li>Je to <strong>přímka</strong></li>
+            <li>Prochází <strong>středem úsečky</strong></li>
+            <li>Je <strong>kolmá</strong> na úsečku AB</li>
+            <li>Dělí rovinu na dvě poloroviny – v jedné body blíže k A, v druhé blíže k B</li>
+          </ol>
+        </div>
+        <div class="card">
+          <h3>🔧 Konstrukce</h3>
+          <div class="step-box">
+            <span class="step-num">1</span>
+            <span>Narýsuj kružnici k₁(A, r), kde r &gt; |AB|/2</span>
+          </div>
+          <div class="step-box">
+            <span class="step-num">2</span>
+            <span>Narýsuj kružnici k₂(B, r) se stejným poloměrem</span>
+          </div>
+          <div class="step-box">
+            <span class="step-num">3</span>
+            <span>Spoj průsečíky P a Q → to je osa úsečky</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== SLIDE 15: KVÍZ – Osa úsečky ===== -->
+    <div class="slide" data-slide="15">
+      <div class="slide-inner">
+        <h2>🧠 Kvíz</h2>
+        <p style="text-align:center;font-size:1.15rem"><strong>Jaký tvar má osa úsečky AB?</strong></p>
+        <div class="quiz-options" id="quiz2">
+          <button class="quiz-btn" data-idx="0" onclick="checkQuiz('quiz2', 0, 2)">
+            <span class="label">A</span><span>Kružnice</span>
+          </button>
+          <button class="quiz-btn" data-idx="1" onclick="checkQuiz('quiz2', 1, 2)">
+            <span class="label">B</span><span>Úsečka</span>
+          </button>
+          <button class="quiz-btn" data-idx="2" onclick="checkQuiz('quiz2', 2, 2)">
+            <span class="label">C</span><span>Přímka kolmá na AB procházející středem</span>
+          </button>
+          <button class="quiz-btn" data-idx="3" onclick="checkQuiz('quiz2', 3, 2)">
+            <span class="label">D</span><span>Rovnoběžka s AB</span>
+          </button>
+        </div>
+        <div id="quiz2-fb" class="quiz-feedback" style="display:none"></div>
+      </div>
+    </div>
+
+    <!-- ===== SLIDE 16: Osa úhlu – ilustrace ===== -->
+    <div class="slide" data-slide="16">
+      <div class="slide-inner">
+        <h2>Osa úhlu – ilustrace</h2>
+        <div class="card">
+          <img src={`${base}img/mnozina-bodu-osa-uhlu.svg`} alt="Osa úhlu" style="width:100%;max-width:500px;display:block;margin:0 auto;border-radius:0.75rem" />
+        </div>
+        <p style="text-align:center;color:var(--text-muted);font-size:0.95rem">Osa úhlu – body stejně vzdálené od obou ramen.</p>
+      </div>
+    </div>
+
+    <!-- ===== SLIDE 17: Osa úhlu – definice ===== -->
+    <div class="slide" data-slide="17">
+      <div class="slide-inner">
+        <h2>4. Osa úhlu</h2>
+        <div class="diagram">
+          <svg viewBox="0 0 340 280" xmlns="http://www.w3.org/2000/svg">
+            <!-- Ramena úhlu: V=(170,250), arm p to (50,70), arm q to (290,70) -->
+            <line x1="170" y1="250" x2="50" y2="70" stroke="#475569" stroke-width="2.5"/>
+            <line x1="170" y1="250" x2="290" y2="70" stroke="#475569" stroke-width="2.5"/>
+            <!-- Popisky ramen -->
+            <text x="42" y="62" font-size="14" fill="#64748b" font-weight="bold" font-family="Inter">p</text>
+            <text x="292" y="62" font-size="14" fill="#64748b" font-weight="bold" font-family="Inter">q</text>
+            <!-- Vrchol V -->
+            <circle cx="170" cy="250" r="5" fill="#d97706"/>
+            <text x="176" y="270" font-size="14" fill="#d97706" font-weight="bold" font-family="Inter">V</text>
+            <!-- Osa úhlu (svislá) -->
+            <line x1="170" y1="250" x2="170" y2="25" stroke="#e11d48" stroke-width="3" stroke-dasharray="8,4"/>
+            <text x="178" y="40" font-size="13" fill="#e11d48" font-weight="600" font-family="Inter">osa úhlu</text>
+            <!-- Oblouky půlení úhlu -->
+            <path d="M 155 222 A 30 30 0 0 1 170 215" fill="none" stroke="#d97706" stroke-width="1.5"/>
+            <path d="M 170 215 A 30 30 0 0 1 185 222" fill="none" stroke="#d97706" stroke-width="1.5"/>
+            <!-- Bod X na ose -->
+            <circle cx="170" cy="130" r="5" fill="#6366f1"/>
+            <text x="178" y="127" font-size="13" fill="#6366f1" font-weight="bold" font-family="Inter">X</text>
+            <!-- Kolmice z X na ramena: pata P_p=(115,167), pata P_q=(225,167) -->
+            <line x1="170" y1="130" x2="115" y2="167" stroke="#6366f1" stroke-width="2" stroke-dasharray="5,3"/>
+            <line x1="170" y1="130" x2="225" y2="167" stroke="#6366f1" stroke-width="2" stroke-dasharray="5,3"/>
+            <!-- Paty kolmic -->
+            <circle cx="115" cy="167" r="3" fill="#6366f1"/>
+            <circle cx="225" cy="167" r="3" fill="#6366f1"/>
+            <!-- Značky pravého úhlu -->
+            <polyline points="111,160 118,156 122,163" fill="none" stroke="#6366f1" stroke-width="1.5"/>
+            <polyline points="229,160 222,156 218,163" fill="none" stroke="#6366f1" stroke-width="1.5"/>
+            <!-- Popisky vzdáleností -->
+            <text x="130" y="143" font-size="12" fill="#6366f1" font-weight="600" font-family="Inter">d</text>
+            <text x="202" y="143" font-size="12" fill="#6366f1" font-weight="600" font-family="Inter">d</text>
+          </svg>
+        </div>
+        <div class="definition">
+          <strong>Osa úhlu</strong> je množina všech bodů, které mají od obou ramen úhlu <span class="highlight">stejnou vzdálenost</span>.<br>
+          Je to polopřímka z vrcholu, která <strong>půlí úhel</strong>.
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== SLIDE 18: Osa úhlu – modelová ukázka ===== -->
+    <div class="slide" data-slide="18">
+      <div class="slide-inner">
+        <h2>📖 Osa úhlu – modelová ukázka</h2>
+        <div class="card" style="padding:0.75rem;max-width:500px;margin:0 auto">
+          <img src={`${base}img/osa-uhlu-1.svg`} alt="Osa úhlu – pojmy a značení" style="width:100%;border-radius:0.5rem" />
+          <p style="text-align:center;font-size:0.85rem;margin-top:0.5rem;color:#e11d48;font-weight:600">Osa úhlu – pojmy a značení</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== SLIDE 19: Osa úhlu – vlastnosti + konstrukce ===== -->
+    <div class="slide" data-slide="19">
+      <div class="slide-inner">
+        <h2>Osa úhlu – vlastnosti a konstrukce</h2>
+        <div class="card card-accent">
+          <h3>📌 Vlastnosti</h3>
+          <ol>
+            <li>Je to <strong>polopřímka</strong> vycházející z vrcholu úhlu</li>
+            <li><strong>Půlí úhel</strong> na dva shodné úhly</li>
+            <li>Každý bod na ose má <strong>stejnou vzdálenost</strong> od obou ramen (měřeno kolmo)</li>
+          </ol>
+        </div>
+        <div class="card">
+          <h3>🔧 Konstrukce</h3>
+          <div class="step-box">
+            <span class="step-num">1</span>
+            <span>Z vrcholu V narýsuj oblouk → protne obě ramena (body P a Q)</span>
+          </div>
+          <div class="step-box">
+            <span class="step-num">2</span>
+            <span>Z bodů P a Q narýsuj oblouky se stejným poloměrem</span>
+          </div>
+          <div class="step-box">
+            <span class="step-num">3</span>
+            <span>Průsečík R spoj s vrcholem V → polopřímka VR je osa úhlu</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== SLIDE 20: KVÍZ – Osa úhlu ===== -->
+    <div class="slide" data-slide="20">
+      <div class="slide-inner">
+        <h2>🧠 Kvíz</h2>
+        <p style="text-align:center;font-size:1.15rem"><strong>Co platí pro každý bod ležící na ose úhlu?</strong></p>
+        <div class="quiz-options" id="quiz3">
+          <button class="quiz-btn" data-idx="0" onclick="checkQuiz('quiz3', 0, 1)">
+            <span class="label">A</span><span>Je stejně daleko od vrcholu úhlu</span>
+          </button>
+          <button class="quiz-btn" data-idx="1" onclick="checkQuiz('quiz3', 1, 1)">
+            <span class="label">B</span><span>Je stejně daleko od obou ramen úhlu</span>
+          </button>
+          <button class="quiz-btn" data-idx="2" onclick="checkQuiz('quiz3', 2, 1)">
+            <span class="label">C</span><span>Leží na kružnici</span>
+          </button>
+          <button class="quiz-btn" data-idx="3" onclick="checkQuiz('quiz3', 3, 1)">
+            <span class="label">D</span><span>Je nejblíže jednomu rameni</span>
+          </button>
+        </div>
+        <div id="quiz3-fb" class="quiz-feedback" style="display:none"></div>
+      </div>
+    </div>
+
+    <!-- ===== SLIDE 21: Rovnoběžky – ilustrace ===== -->
+    <div class="slide" data-slide="21">
+      <div class="slide-inner">
+        <h2>Rovnoběžky – ilustrace</h2>
+        <div class="card">
+          <img src={`${base}img/mnozina-bodu-rovnobezky.svg`} alt="Rovnoběžky" style="width:100%;max-width:500px;display:block;margin:0 auto;border-radius:0.75rem" />
+        </div>
+        <p style="text-align:center;color:var(--text-muted);font-size:0.95rem">Množina bodů ve vzdálenosti d od přímky p.</p>
+      </div>
+    </div>
+
+    <!-- ===== SLIDE 22: Rovnoběžky – definice ===== -->
+    <div class="slide" data-slide="22">
+      <div class="slide-inner">
+        <h2>5. Rovnoběžky</h2>
+        <div class="diagram">
+          <svg viewBox="0 0 340 220" xmlns="http://www.w3.org/2000/svg">
+            <line x1="20" y1="110" x2="320" y2="110" stroke="#475569" stroke-width="3"/>
+            <text x="325" y="114" font-size="16" fill="#475569" font-weight="bold" font-family="Inter">p</text>
+            <line x1="20" y1="55" x2="320" y2="55" stroke="#e11d48" stroke-width="2.5" stroke-dasharray="8,4"/>
+            <line x1="20" y1="165" x2="320" y2="165" stroke="#e11d48" stroke-width="2.5" stroke-dasharray="8,4"/>
+            <line x1="60" y1="110" x2="60" y2="55" stroke="#d97706" stroke-width="1.5" stroke-dasharray="4,3"/>
+            <text x="66" y="88" font-size="12" fill="#d97706" font-weight="600" font-family="Inter">d</text>
+            <line x1="60" y1="110" x2="60" y2="165" stroke="#d97706" stroke-width="1.5" stroke-dasharray="4,3"/>
+            <text x="66" y="142" font-size="12" fill="#d97706" font-weight="600" font-family="Inter">d</text>
+            <text x="170" y="208" font-size="12" fill="#64748b" text-anchor="middle" font-family="Inter">Body ve vzdálenosti d od přímky p = dvě rovnoběžky</text>
+          </svg>
+        </div>
+        <div class="definition">
+          Množina všech bodů ve vzdálenosti <strong>d</strong> od přímky p tvoří <span class="highlight">dvě rovnoběžky</span> – jednu na každé straně.
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== SLIDE 23: Rovnoběžky – vlastnosti ===== -->
+    <div class="slide" data-slide="23">
+      <div class="slide-inner">
+        <h2>Rovnoběžky – vlastnosti</h2>
+        <div class="card card-accent">
+          <h3>📌 Vlastnosti</h3>
+          <ol>
+            <li>Jedna rovnoběžka je „nad" přímkou p, druhá „pod"</li>
+            <li>Obě rovnoběžky jsou ve vzdálenosti <strong>d</strong> od p</li>
+            <li>Vzdálenost bodu od přímky měříme vždy <strong>kolmo</strong></li>
+          </ol>
+        </div>
+        <div class="card card-warning">
+          <p style="text-align:center">📌 Pokud d = 0, výsledkem je <span class="highlight">samotná přímka p</span>.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== SLIDE 24: KVÍZ – Rovnoběžky ===== -->
+    <div class="slide" data-slide="24">
+      <div class="slide-inner">
+        <h2>🧠 Kvíz</h2>
+        <p style="text-align:center;font-size:1.15rem"><strong>Kolik bodů tvoří množinu bodů ve vzdálenosti 3 cm od přímky?</strong></p>
+        <div class="quiz-options" id="quiz4">
+          <button class="quiz-btn" data-idx="0" onclick="checkQuiz('quiz4', 0, 3)">
+            <span class="label">A</span><span>Jeden bod</span>
+          </button>
+          <button class="quiz-btn" data-idx="1" onclick="checkQuiz('quiz4', 1, 3)">
+            <span class="label">B</span><span>Dva body</span>
+          </button>
+          <button class="quiz-btn" data-idx="2" onclick="checkQuiz('quiz4', 2, 3)">
+            <span class="label">C</span><span>Jednu přímku</span>
+          </button>
+          <button class="quiz-btn" data-idx="3" onclick="checkQuiz('quiz4', 3, 3)">
+            <span class="label">D</span><span>Dvě rovnoběžné přímky</span>
+          </button>
+        </div>
+        <div id="quiz4-fb" class="quiz-feedback" style="display:none"></div>
+      </div>
+    </div>
+
+    <!-- ===== SLIDE 25: Přehled ===== -->
+    <div class="slide" data-slide="25">
+      <div class="slide-inner">
+        <h2>📋 Přehled množin bodů</h2>
+        <div class="card" style="overflow-x:auto">
+          <table>
+            <thead>
+              <tr><th>Vlastnost</th><th>Množina bodů</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Body ve vzdálenosti r od bodu S</td><td><span class="highlight">Kružnice</span> k(S, r)</td></tr>
+              <tr><td>Body stejně daleko od A a B</td><td><span class="highlight">Osa úsečky</span> AB</td></tr>
+              <tr><td>Body stejně daleko od ramen úhlu</td><td><span class="highlight">Osa úhlu</span></td></tr>
+              <tr><td>Body ve vzdálenosti d od přímky p</td><td><span class="highlight">Dvě rovnoběžky</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== SLIDE 26: Příklad 1 – Osa úsečky ===== -->
+    <div class="slide" data-slide="26">
+      <div class="slide-inner">
+        <h2>📝 Příklad 1</h2>
+        <div class="card">
+          <p><strong>Zadání:</strong> Najdi množinu všech bodů v rovině, které jsou <span class="highlight">stejně vzdálené</span> od bodů A a B, kde |AB| = 8 cm.</p>
+        </div>
+        <div class="card card-accent">
+          <h3>Rozbor</h3>
+          <ul>
+            <li>Hledáme body X takové, že <strong>|XA| = |XB|</strong></li>
+            <li>Každý takový bod leží na <strong>ose úsečky AB</strong></li>
+          </ul>
+        </div>
+        <div class="card card-success">
+          <h3>Řešení</h3>
+          <div class="step-box">
+            <span class="step-num">1</span>
+            <span>Narýsuj úsečku AB = 8 cm</span>
+          </div>
+          <div class="step-box">
+            <span class="step-num">2</span>
+            <span>Sestroj osu úsečky AB (kolmice procházející středem)</span>
+          </div>
+          <p style="margin-top:0.75rem"><strong>Odpověď:</strong> Množina bodů je <span class="highlight">osa úsečky AB</span> – přímka kolmá na AB procházející jejím středem.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== SLIDE 27: Příklad 2 – Osy úhlů ===== -->
+    <div class="slide" data-slide="27">
+      <div class="slide-inner">
+        <h2>📝 Příklad 2</h2>
+        <div class="card">
+          <p><strong>Zadání:</strong> Najdi množinu všech bodů v rovině, které jsou <span class="highlight">stejně vzdálené</span> od dvou různoběžek p a q.</p>
+        </div>
+        <div class="card card-accent">
+          <h3>Rozbor</h3>
+          <ul>
+            <li>Hledáme body X: vzdálenost od p = vzdálenost od q</li>
+            <li>Přímky p a q se protínají v bodě V a svírají úhel</li>
+          </ul>
+        </div>
+        <div class="card card-success">
+          <h3>Řešení</h3>
+          <div class="step-box">
+            <span class="step-num">1</span>
+            <span>Najdi průsečík V přímek p a q</span>
+          </div>
+          <div class="step-box">
+            <span class="step-num">2</span>
+            <span>Sestroj osy úhlů, které přímky svírají</span>
+          </div>
+          <p style="margin-top:0.75rem"><strong>Odpověď:</strong> Množina bodů tvoří <span class="highlight">dvě na sebe kolmé přímky</span> – osy úhlů.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== SLIDE 28: Na co pozor ===== -->
+    <div class="slide" data-slide="28">
+      <div class="slide-inner">
+        <h2>⚠️ Na co si dát pozor</h2>
+        <div class="card card-warning">
+          <ul style="list-style:none;padding:0">
+            <li style="margin-bottom:0.8rem">❌ Záměna <strong>kružnice a kruhu</strong> – kružnice je jen obrys!</li>
+            <li style="margin-bottom:0.8rem">❌ Osa úsečky <strong>musí být kolmá</strong> na úsečku a procházet středem</li>
+            <li style="margin-bottom:0.8rem">❌ Zapomenutá <strong>druhá rovnoběžka</strong> – vždy jsou DVĚ!</li>
+            <li>❌ Při konstrukci osy: poloměr musí být <strong>větší než polovina</strong> úsečky</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== SLIDE 29: KVÍZ – Průsečík os stran ===== -->
+    <div class="slide" data-slide="29">
+      <div class="slide-inner">
+        <h2>🧠 Kvíz</h2>
+        <p style="text-align:center;font-size:1.15rem"><strong>Průsečík os stran trojúhelníku je střed…</strong></p>
+        <div class="quiz-options" id="quiz5">
+          <button class="quiz-btn" data-idx="0" onclick="checkQuiz('quiz5', 0, 1)">
+            <span class="label">A</span><span>Vepsané kružnice</span>
+          </button>
+          <button class="quiz-btn" data-idx="1" onclick="checkQuiz('quiz5', 1, 1)">
+            <span class="label">B</span><span>Opsané kružnice</span>
+          </button>
+          <button class="quiz-btn" data-idx="2" onclick="checkQuiz('quiz5', 2, 1)">
+            <span class="label">C</span><span>Těžiště</span>
+          </button>
+          <button class="quiz-btn" data-idx="3" onclick="checkQuiz('quiz5', 3, 1)">
+            <span class="label">D</span><span>Žádné kružnice</span>
+          </button>
+        </div>
+        <div id="quiz5-fb" class="quiz-feedback" style="display:none"></div>
+      </div>
+    </div>
+
+    <!-- ===== SLIDE 30: KVÍZ – Vzdálenost od bodu ===== -->
+    <div class="slide" data-slide="30">
+      <div class="slide-inner">
+        <h2>🧠 Kvíz</h2>
+        <p style="text-align:center;font-size:1.15rem"><strong>Jaká je množina bodů, které mají od bodu M vzdálenost 5 cm?</strong></p>
+        <div class="quiz-options" id="quiz6">
+          <button class="quiz-btn" data-idx="0" onclick="checkQuiz('quiz6', 0, 1)">
+            <span class="label">A</span><span>Přímka</span>
+          </button>
+          <button class="quiz-btn" data-idx="1" onclick="checkQuiz('quiz6', 1, 1)">
+            <span class="label">B</span><span>Kružnice k(M, 5 cm)</span>
+          </button>
+          <button class="quiz-btn" data-idx="2" onclick="checkQuiz('quiz6', 2, 1)">
+            <span class="label">C</span><span>Kruh</span>
+          </button>
+          <button class="quiz-btn" data-idx="3" onclick="checkQuiz('quiz6', 3, 1)">
+            <span class="label">D</span><span>Dvě rovnoběžky</span>
+          </button>
+        </div>
+        <div id="quiz6-fb" class="quiz-feedback" style="display:none"></div>
+      </div>
+    </div>
+
+    <!-- ===== SLIDE 31: KVÍZ – Kružnice opsaná ===== -->
+    <div class="slide" data-slide="31">
+      <div class="slide-inner">
+        <h2>🧠 Kvíz</h2>
+        <p style="text-align:center;font-size:1.15rem"><strong>Kde leží střed kružnice opsané trojúhelníku?</strong></p>
+        <div class="quiz-options" id="quiz7">
+          <button class="quiz-btn" data-idx="0" onclick="checkQuiz('quiz7', 0, 1)">
+            <span class="label">A</span><span>V těžišti</span>
+          </button>
+          <button class="quiz-btn" data-idx="1" onclick="checkQuiz('quiz7', 1, 1)">
+            <span class="label">B</span><span>V průsečíku os stran</span>
+          </button>
+          <button class="quiz-btn" data-idx="2" onclick="checkQuiz('quiz7', 2, 1)">
+            <span class="label">C</span><span>V průsečíku os úhlů</span>
+          </button>
+          <button class="quiz-btn" data-idx="3" onclick="checkQuiz('quiz7', 3, 1)">
+            <span class="label">D</span><span>Ve vrcholu</span>
+          </button>
+        </div>
+        <div id="quiz7-fb" class="quiz-feedback" style="display:none"></div>
+      </div>
+    </div>
+
+    <!-- ===== SLIDE 32: KVÍZ – Kružnice vepsaná ===== -->
+    <div class="slide" data-slide="32">
+      <div class="slide-inner">
+        <h2>🧠 Kvíz</h2>
+        <p style="text-align:center;font-size:1.15rem"><strong>Kde leží střed kružnice vepsané trojúhelníku?</strong></p>
+        <div class="quiz-options" id="quiz8">
+          <button class="quiz-btn" data-idx="0" onclick="checkQuiz('quiz8', 0, 2)">
+            <span class="label">A</span><span>V těžišti</span>
+          </button>
+          <button class="quiz-btn" data-idx="1" onclick="checkQuiz('quiz8', 1, 2)">
+            <span class="label">B</span><span>V průsečíku os stran</span>
+          </button>
+          <button class="quiz-btn" data-idx="2" onclick="checkQuiz('quiz8', 2, 2)">
+            <span class="label">C</span><span>V průsečíku os úhlů</span>
+          </button>
+          <button class="quiz-btn" data-idx="3" onclick="checkQuiz('quiz8', 3, 2)">
+            <span class="label">D</span><span>Ve vrcholu</span>
+          </button>
+        </div>
+        <div id="quiz8-fb" class="quiz-feedback" style="display:none"></div>
+      </div>
+    </div>
+
+    <!-- ===== SLIDE 33: KVÍZ – Osy souměrnosti ===== -->
+    <div class="slide" data-slide="33">
+      <div class="slide-inner">
+        <h2>🧠 Kvíz</h2>
+        <p style="text-align:center;font-size:1.15rem"><strong>Kolik os souměrnosti má kružnice?</strong></p>
+        <div class="quiz-options" id="quiz9">
+          <button class="quiz-btn" data-idx="0" onclick="checkQuiz('quiz9', 0, 3)">
+            <span class="label">A</span><span>Jednu</span>
+          </button>
+          <button class="quiz-btn" data-idx="1" onclick="checkQuiz('quiz9', 1, 3)">
+            <span class="label">B</span><span>Dvě</span>
+          </button>
+          <button class="quiz-btn" data-idx="2" onclick="checkQuiz('quiz9', 2, 3)">
+            <span class="label">C</span><span>Čtyři</span>
+          </button>
+          <button class="quiz-btn" data-idx="3" onclick="checkQuiz('quiz9', 3, 3)">
+            <span class="label">D</span><span>Nekonečně mnoho</span>
+          </button>
+        </div>
+        <div id="quiz9-fb" class="quiz-feedback" style="display:none"></div>
+      </div>
+    </div>
+
+    <!-- ===== SLIDE 34: Shrnutí ===== -->
+    <div class="slide" data-slide="34">
+      <div class="slide-inner">
+        <h2>✅ Shrnutí</h2>
+        <div class="card card-accent">
+          <ol style="font-size:clamp(1rem,2vw,1.2rem)">
+            <li><strong>Kružnice</strong> = body ve stejné vzdálenosti od středu</li>
+            <li><strong>Osa úsečky</strong> = body stejně daleko od koncových bodů (kolmice středem)</li>
+            <li><strong>Osa úhlu</strong> = body stejně daleko od ramen úhlu (půlí úhel)</li>
+            <li><strong>Rovnoběžky</strong> = body ve stejné vzdálenosti od přímky (dvě přímky)</li>
+          </ol>
+        </div>
+        <div class="emoji-big" style="margin-top:1rem">🎉</div>
+        <h3>Skvělá práce!</h3>
+        <p class="subtitle">Pokračuj na <a href={`${base}docs/mnozina-bodu-priklady`} style="color:#4338ca;font-weight:600">Příklady k procvičení →</a></p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Navigation bar -->
+  <div class="nav-bar">
+    <button class="nav-btn" id="prevBtn" onclick="goSlide(-1)">← Zpět</button>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    <span class="slide-counter" id="slideCounter">1 / 35</span>
+    <button class="nav-btn" id="nextBtn" onclick="goSlide(1)">Další →</button>
+  </div>
+
+  <script is:inline>
+    const slides = document.querySelectorAll('.slide');
+    const total = slides.length;
+    let current = 0;
+    const quizDone = {};
+
+    function updateSlide() {
+      slides.forEach((s, i) => {
+        s.classList.remove('active', 'prev');
+        if (i === current) s.classList.add('active');
+        else if (i < current) s.classList.add('prev');
+      });
+      document.getElementById('slideCounter').textContent = `${current + 1} / ${total}`;
+      document.getElementById('progressFill').style.width = `${((current + 1) / total) * 100}%`;
+      document.getElementById('prevBtn').disabled = current === 0;
+      document.getElementById('nextBtn').disabled = current === total - 1;
+    }
+
+    function goSlide(dir) {
+      const next = current + dir;
+      if (next < 0 || next >= total) return;
+      current = next;
+      updateSlide();
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); goSlide(1); }
+      if (e.key === 'ArrowLeft') { e.preventDefault(); goSlide(-1); }
+    });
+
+    let touchStartX = 0, touchStartY = 0;
+    document.addEventListener('touchstart', (e) => {
+      touchStartX = e.touches[0].clientX;
+      touchStartY = e.touches[0].clientY;
+    }, { passive: true });
+    document.addEventListener('touchend', (e) => {
+      const dx = e.changedTouches[0].clientX - touchStartX;
+      const dy = e.changedTouches[0].clientY - touchStartY;
+      if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 50) {
+        if (dx < 0) goSlide(1); else goSlide(-1);
+      }
+    }, { passive: true });
+
+    window.checkQuiz = function(quizId, selected, correct) {
+      if (quizDone[quizId]) return;
+      const container = document.getElementById(quizId);
+      const fb = document.getElementById(quizId + '-fb');
+      const btns = container.querySelectorAll('.quiz-btn');
+
+      if (selected === correct) {
+        quizDone[quizId] = true;
+        btns[selected].classList.add('correct');
+        fb.textContent = '✅ Správně!';
+        fb.className = 'quiz-feedback ok';
+        fb.style.display = 'block';
+        btns.forEach(b => b.style.pointerEvents = 'none');
+      } else {
+        btns[selected].classList.add('wrong');
+        fb.textContent = '❌ Zkus to znovu!';
+        fb.className = 'quiz-feedback nok';
+        fb.style.display = 'block';
+        setTimeout(() => {
+          btns[selected].classList.remove('wrong');
+          fb.style.display = 'none';
+        }, 1200);
+      }
+    };
+
+    updateSlide();
+  </script>
+</body>
+</html>

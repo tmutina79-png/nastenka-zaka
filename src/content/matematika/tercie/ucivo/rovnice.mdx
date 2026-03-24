@@ -1,0 +1,102 @@
+---
+title: "Rovnice"
+description: "Lineární rovnice – vysvětlení, postup řešení a příklady."
+trida: "tercie"
+kategorie: "ucivo"
+order: 1
+---
+
+import SelfCheck from '../../../../components/SelfCheck.svelte';
+import Quiz from '../../../../components/Quiz.svelte';
+import VideoModal from '../../../../components/VideoModal.svelte';
+import ImageModal from '../../../../components/ImageModal.svelte';
+
+# Rovnice – Lineární rovnice 📐
+
+> **Klíčová otázka:** Co je to rovnice a jak ji vyřešíme?
+
+---
+
+<h2 id="1-co-je-rovnice">1. Co je rovnice?</h2>
+
+**Rovnice** je matematický zápis, ve kterém se dva výrazy rovnají. Obsahuje **neznámou** (většinou $x$), jejíž hodnotu hledáme.
+
+$$
+2x + 3 = 11
+$$
+
+Řešením rovnice je hodnota neznámé, pro kterou platí rovnost obou stran.
+
+---
+
+<h2 id="2-zakladni-pravidla">2. Základní pravidla pro řešení</h2>
+
+S rovnicí můžeme provádět **ekvivalentní úpravy** – obě strany rovnice upravíme stejným způsobem:
+
+| Úprava | Příklad |
+|:-------|:--------|
+| **Přičtení/odečtení** stejného čísla k oběma stranám | $x - 5 = 3 \Rightarrow x = 8$ |
+| **Vynásobení/vydělení** obou stran stejným nenulovým číslem | $3x = 12 \Rightarrow x = 4$ |
+
+> ⚠️ **Pozor:** Nikdy nedělíme nulou!
+
+<SelfCheck client:load id="tercie-rovnice-pravidla" label="Rozumím základním pravidlům pro řešení rovnic." />
+
+---
+
+<h2 id="3-postup-reseni">3. Postup řešení lineární rovnice</h2>
+
+1. **Zjednodušíme** obě strany rovnice (roznásobíme závorky, sečteme stejné členy).
+2. **Převedeme** neznámé na jednu stranu a čísla na druhou stranu.
+3. **Vydělíme** obě strany koeficientem u neznámé.
+4. **Provedeme zkoušku** – dosadíme výsledek zpět do původní rovnice.
+
+### Příklad:
+
+$$
+3(x + 2) - 4 = 2x + 5
+$$
+
+$$
+3x + 6 - 4 = 2x + 5
+$$
+
+$$
+3x + 2 = 2x + 5
+$$
+
+$$
+x = 3
+$$
+
+**Zkouška:** $3(3 + 2) - 4 = 2 \cdot 3 + 5 \Rightarrow 15 - 4 = 11$ ✓
+
+<SelfCheck client:load id="tercie-rovnice-postup" label="Umím popsat postup řešení lineární rovnice." />
+
+---
+
+<h2 id="4-kviz">4. Ověř si znalosti</h2>
+
+<Quiz
+  client:load
+  questions={[
+    {
+      question: "Co je řešením rovnice 2x + 4 = 10?",
+      options: ["x = 2", "x = 3", "x = 7", "x = 4"],
+      correct: 1,
+      explanation: "2x = 10 - 4 = 6, tedy x = 3."
+    },
+    {
+      question: "Kterou úpravou NELZE provést při řešení rovnice?",
+      options: ["Přičíst stejné číslo k oběma stranám", "Vynásobit obě strany nulou", "Odečíst stejné číslo od obou stran", "Vydělit obě strany nenulovým číslem"],
+      correct: 1,
+      explanation: "Násobení nulou zničí informaci – obě strany se stanou 0 = 0."
+    },
+    {
+      question: "Jaký je výsledek rovnice 5x - 3 = 2x + 9?",
+      options: ["x = 2", "x = 4", "x = 6", "x = 3"],
+      correct: 1,
+      explanation: "5x - 2x = 9 + 3, tedy 3x = 12, x = 4."
+    }
+  ]}
+/>

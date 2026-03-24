@@ -1,0 +1,259 @@
+---
+title: "Definiční obor funkce"
+description: "Jak určit definiční obor funkce – teorie, příklady a kvíz."
+trida: "kvarta"
+kategorie: "ucivo"
+order: 3
+---
+
+import SelfCheck from '../../../../../components/SelfCheck.svelte';
+import Quiz from '../../../../../components/Quiz.svelte';
+import StepByStepSolution from '../../../../../components/StepByStepSolution.svelte';
+import VideoModal from '../../../../../components/VideoModal.svelte';
+import ImageModal from '../../../../../components/ImageModal.svelte';
+
+# Definiční obor funkce 📐
+
+> **Klíčová otázka:** Pro jaká čísla má funkce smysl – kdy má dosazování do funkce význam?
+
+<VideoModal client:load src="/video-definicni-obor.html" title="📐 Definiční obor funkce – animované video" thumbnailImg="/img/video-definicni-obor-thumb.svg" />
+
+---
+
+<h2 id="1-co-je-definicni-obor">1. Co je definiční obor?</h2>
+
+**Definiční obor** funkce $f$ (značíme $D(f)$) je množina všech hodnot $x$, pro které je funkce **definovaná** – tedy má smysl do ní toto $x$ dosadit.
+
+Jinými slovy: funkci můžeš chápat jako "stroj", do kterého vkládáš čísla $x$. **Definiční obor** je množina všech **povolených vstupů**. Pokud číslo do definičního oboru **nepatří**, dosazení by vedlo k nesmyslu (např. dělení nulou, odmocnina ze záporného čísla apod.).
+
+$$
+D(f) = \{x \in \mathbb{R} : f(x) \text{ existuje}\}
+$$
+
+<ImageModal client:load src="/img/df-stroj.svg" alt="Funkce jako stroj – definiční obor D(f) = povolené vstupy" />
+
+### Kdy funkce NEMÁ smysl?
+
+| Situace | Podmínka | Příklad |
+|:--------|:---------|:--------|
+| **Zlomek** $\frac{1}{g(x)}$ | $g(x) \neq 0$ (nesmíme dělit nulou) | $f(x) = \frac{1}{x-3}$ → $x \neq 3$ |
+| **Odmocnina** $\sqrt{g(x)}$ | $g(x) \geq 0$ (pod odmocninou nesmí být záporné číslo) | $f(x) = \sqrt{x-1}$ → $x \geq 1$ |
+| **Logaritmus** $\log g(x)$ | $g(x) > 0$ (argument logaritmu musí být kladný) | $f(x) = \log(x+2)$ → $x > -2$ |
+
+> 💡 **Zapamatuj si:** Pokud v předpisu není zlomek, odmocnina ani logaritmus, definiční obor je většinou $\mathbb{R}$ (všechna reálná čísla).
+
+<SelfCheck client:load id="funkce-dmo-teorie" label="Rozumím, co je definiční obor a kdy funkce nemá smysl." />
+
+---
+<h2 id="3-jak-urcit-definicni-obor">2. Jak určit definiční obor – postup</h2>
+
+Při určování definičního oboru často postupujeme takto:
+
+1. **Podívej se na předpis** – obsahuje zlomek, odmocninu nebo logaritmus?
+2. **Napiš podmínku** – jmenovatel ≠ 0, výraz pod odmocninou ≥ 0, argument logaritmu > 0.
+3. **Vyřeš nerovnici nebo nerovnice** – získáš omezení pro $x$.
+4. **Zapiš výsledek** – jako množinu nebo interval (nebo sjednocení intervalů).
+
+Často si můžeš představit, že **začínáš od celé množiny reálných čísel** a postupně z ní **škrtáš zakázané hodnoty** (např. $x = 3$, $x < -4$ apod.). To, co zůstane, je právě $D(f)$.
+
+<ImageModal client:load src="/img/df-postup.svg" alt="Postup pro určení definičního oboru D(f) – 4 kroky" />
+
+### Jak zapisujeme $D(f)$ a proč píšeme „=“
+
+Definiční obor označujeme $D(f)$. Platí, že $D(f)$ je **množina** (soubor čísel), proto ji **popisujeme rovností**:
+
+$$
+D(f) = \mathbb{R}, \quad D(f) = \langle 1, +\infty), \quad D(f) = \mathbb{R} \setminus \{3\}.
+$$
+
+Neříkáme tedy $D(f) \in \mathbb{R}$, protože zápis $A \in B$ znamená, že **prvek** $A$ patří do množiny $B$. Zde je to ale naopak: $D(f)$ **je množina**, která se **rovná** nějaké jiné množině (např. $\mathbb{R}$ nebo intervalu).
+
+### Znázornění definičního oboru na číselné ose
+
+Definiční obor umíme pěkně znázornit na číselné ose:
+
+- **Uzavřený interval** $\langle a, b \rangle$ – na ose vyznačíme úsek od $a$ do $b$ a na obou koncích dáme **plné kolečko** (konce do intervalu patří).
+- **Otevřený interval** $(a, b)$ – úsek od $a$ do $b$, na koncích **prázdná kolečka** (konce nepatří).
+- **Polouzavřený interval** $\langle a, b)$ nebo $(a, b\rangle$ – na jedné straně plné kolečko, na druhé prázdné.
+- **Vynechaný bod** (např. $\mathbb{R} \setminus \{3\}$) – celá osa je zvýrazněná, ale u čísla $3$ je **prázdné kolečko** (hodnota $3$ nepatří do definičního oboru).
+
+Příklad: pro $D(f) = \langle 1, +\infty)$ začínáme na číselné ose v bodě $1$ plným kolečkem a vyznačíme šipku směrem doprava (všechna čísla větší nebo rovna 1).
+
+<ImageModal client:load src="/img/df-ciselna-osa.svg" alt="Znázornění D(f) na číselné ose – přehled 4 příkladů" />
+
+---
+
+<h2 id="4-priklady">4. Příklady s postupem</h2>
+
+### Příklad 1: Lineární funkce
+
+> 📝 **Zadání:** Urči $D(f)$ pro $f(x) = 3x - 7$.
+
+<StepByStepSolution
+  client:load
+  hint="V předpisu není zlomek, odmocnina ani logaritmus."
+  steps={[
+    "Předpis funkce: <strong>f(x) = 3x − 7</strong>.",
+    "V předpisu není žádné omezení (žádný zlomek, odmocnina, logaritmus).",
+    "Za x můžeme dosadit <strong>libovolné reálné číslo</strong>.",
+    "<strong>Odpověď:</strong> D(f) = <strong>ℝ</strong> (všechna reálná čísla)."
+  ]}
+/>
+
+---
+
+### Příklad 2: Funkce se zlomkem
+
+> 📝 **Zadání:** Urči $D(f)$ pro $f(x) = \frac{1}{x - 3}$.
+
+<StepByStepSolution
+  client:load
+  hint="Jmenovatel zlomku nesmí být nula."
+  steps={[
+    "Předpis funkce: <strong>f(x) = 1/(x − 3)</strong>.",
+    "Jmenovatel je <strong>x − 3</strong>. Nesmí být roven nule.",
+    "Řešíme: x − 3 ≠ 0 → <strong>x ≠ 3</strong>.",
+    "<strong>Odpověď:</strong> D(f) = <strong>ℝ ∖ {3}</strong> (všechna reálná čísla kromě 3)."
+  ]}
+/>
+
+<ImageModal client:load src="/img/df-zlomek.svg" alt="Graf funkce f(x) = 1/(x−3) – zakázaný bod x=3 a definiční obor" />
+
+---
+
+### Příklad 3: Funkce s odmocninou
+
+> 📝 **Zadání:** Urči $D(f)$ pro $f(x) = \sqrt{x - 1}$.
+
+<StepByStepSolution
+  client:load
+  hint="Pod odmocninou nesmí být záporné číslo. Nejprve urči, kdy má výraz pod odmocninou smysl."
+  steps={[
+    "Předpis funkce: <strong>f(x) = √(x − 1)</strong>.",
+    "Výraz pod odmocninou musí být nezáporný: <strong>x − 1 ≥ 0</strong>.",
+    "Řešíme nerovnici: <strong>x ≥ 1</strong>.",
+    "<strong>Odpověď:</strong> Definiční obor je <strong>D(f) = ⟨1, +∞)</strong>."
+  ]}
+/>
+
+<ImageModal client:load src="/img/df-odmocnina.svg" alt="Graf funkce f(x) = √(x−1) – zakázaná zóna x<1 a definiční obor" />
+
+---
+
+### Příklad 4: Zlomek s odmocninou
+
+> 📝 **Zadání:** Urči $D(f)$ pro $f(x) = \frac{2}{\sqrt{x + 4}}$.
+
+<StepByStepSolution
+  client:load
+  hint="Musí platit dvě podmínky najednou: výraz pod odmocninou ≥ 0 a zároveň jmenovatel ≠ 0."
+  steps={[
+    "Předpis: <strong>f(x) = 2/√(x + 4)</strong>.",
+    "<strong>Podmínka 1:</strong> Pod odmocninou nesmí být záporné číslo: x + 4 ≥ 0 → <strong>x ≥ −4</strong>.",
+    "<strong>Podmínka 2:</strong> Jmenovatel nesmí být nula: √(x + 4) ≠ 0 → x + 4 ≠ 0 → <strong>x ≠ −4</strong>.",
+    "Spojíme obě podmínky: x ≥ −4 a zároveň x ≠ −4 → <strong>x > −4</strong>.",
+    "<strong>Odpověď:</strong> D(f) = <strong>(−4, +∞)</strong>."
+  ]}
+/>
+
+---
+
+### Příklad 5: Kvadratická funkce – definiční obor
+
+> 📝 **Zadání:** Urči $D(f)$ pro $f(x) = x^2 - 4$.
+
+<StepByStepSolution
+  client:load
+  hint="Sleduj, zda se v předpisu objevuje zlomek, odmocnina nebo logaritmus."
+  steps={[
+    "Předpis: <strong>f(x) = x² − 4</strong>.",
+    "V předpisu není zlomek, odmocnina ani logaritmus.",
+    "Za x můžeme dosazovat libovolná reálná čísla.",
+    "<strong>Odpověď:</strong> Definiční obor je <strong>D(f) = ℝ</strong>."
+  ]}
+/>
+
+---
+
+### Příklad 6: Slovní úloha – definiční obor
+
+> 📝 **Zadání:** Cena jízdného závisí na vzdálenosti: $c(x) = 2x + 10$ Kč, kde $x$ je vzdálenost v km. Jaký je definiční obor, pokud minimální vzdálenost je 1 km a maximální 100 km?
+
+<StepByStepSolution
+  client:load
+  hint="Všimni si, jak je v zadání omezená vzdálenost x. To ti určuje definiční obor."
+  steps={[
+    "Funkce: <strong>c(x) = 2x + 10</strong>.",
+    "Z kontextu úlohy: vzdálenost x může být od 1 km do 100 km.",
+    "Tedy <strong>1 ≤ x ≤ 100</strong>.",
+    "<strong>Odpověď:</strong> Definiční obor je <strong>D(c) = ⟨1, 100⟩</strong>."
+  ]}
+/>
+
+---
+
+<SelfCheck client:load id="funkce-dmo-ho-priklady" label="Umím určit definiční obor funkce z předpisu." />
+
+---
+
+<h2 id="5-shrnuti">3. Shrnutí – definiční obor</h2>
+
+| Typ funkce | $D(f)$ |
+|:-----------|:-------|
+| $f(x) = ax + b$ | $\mathbb{R}$ |
+| $f(x) = x^2$ | $\mathbb{R}$ |
+| $f(x) = \frac{1}{x}$ | $\mathbb{R} \setminus \{0\}$ |
+| $f(x) = \sqrt{x}$ | $\langle 0, +\infty)$ |
+| $f(x) = \|x\|$ | $\mathbb{R}$ |
+
+### Postup v kostce (pro $D(f)$):
+1. 🔍 **Najdi omezení** – zlomek, odmocnina, logaritmus.
+2. ✏️ **Napiš podmínky** – jmenovatel ≠ 0, pod odmocninou ≥ 0.
+3. 📐 **Vyřeš nerovnice** – získáš povolená $x$.
+4. 📝 **Zapiš intervalem nebo množinou**.
+
+---
+
+<h2 id="6-kviz">✅ Ověř si znalosti</h2>
+
+<Quiz
+  client:load
+  questions={[
+    {
+      question: "Jaký je definiční obor funkce f(x) = 1/(x − 3)?",
+      options: ["Všechna reálná čísla", "Všechna reálná čísla kromě 0", "Všechna reálná čísla kromě 3", "Pouze kladná čísla"],
+      correct: 2,
+      explanation: "Jmenovatel x − 3 nesmí být nula, tedy x ≠ 3. D(f) = ℝ ∖ {3}."
+    },
+    {
+      question: "Jaký je definiční obor funkce f(x) = √(2x − 6)?",
+      options: ["x ≥ 6", "x ≥ 3", "x > 3", "x ≥ 0"],
+      correct: 1,
+      explanation: "2x − 6 ≥ 0 → 2x ≥ 6 → x ≥ 3. D(f) = ⟨3, +∞)."
+    },
+    {
+      question: "Jaký je definiční obor funkce f(x) = x²?",
+      options: ["Pouze kladná čísla", "Pouze nezáporná čísla", "Všechna reálná čísla", "Všechna záporná čísla"],
+      correct: 2,
+      explanation: "V předpisu není zlomek, odmocnina ani logaritmus, proto můžeme dosazovat libovolná reálná čísla. D(f) = ℝ."
+    },
+    {
+      question: "Jaký je definiční obor funkce f(x) = 3/(√(x + 5))?",
+      options: ["x ≥ −5", "x > −5", "x > 5", "Všechna reálná čísla"],
+      correct: 1,
+      explanation: "Pod odmocninou: x + 5 ≥ 0 → x ≥ −5. Ale jmenovatel ≠ 0: √(x+5) ≠ 0 → x ≠ −5. Dohromady: x > −5."
+    },
+    {
+      question: "Funkce f(x) = 5x − 2 má definiční obor:",
+      options: ["Pouze kladná čísla", "x ≥ 2/5", "Všechna reálná čísla", "x ≠ 0"],
+      correct: 2,
+      explanation: "Lineární funkce nemá žádné omezení – D(f) = ℝ."
+    },
+    {
+      question: "Jaký je definiční obor funkce f(x) = x² + 3?",
+      options: ["Pouze kladná čísla", "Pouze nezáporná čísla", "Všechna reálná čísla", "x ≠ 0"],
+      correct: 2,
+      explanation: "Funkce je polynom (kvadratická), nemá žádné omezení pro dosazování → D(f) = ℝ."
+    }
+  ]}
+/>
