@@ -200,6 +200,22 @@ const kvartaPriklady: { slug: string; title: string }[] = [
         'flex-1 p-6 md:p-10 w-full',
         noSidebar ? 'max-w-7xl mx-auto' : 'max-w-4xl mx-auto'
       ]}>
+        {!noSidebar && (
+          <div class="flex justify-end mb-0 -mt-4 -mr-4">
+            <button
+              id="fullscreen-toggle"
+              class="hidden md:inline-flex items-center justify-center w-8 h-8 rounded-md text-primary-400 hover:text-primary-700 hover:bg-primary-100 transition-all cursor-pointer"
+              title="Zobrazit na celou šířku"
+            >
+              <svg id="fs-icon-expand" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5v-4m0 4h-4m4 0l-5-5"/>
+              </svg>
+              <svg id="fs-icon-collapse" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 9V4H4m0 0l5 5M9 15v5H4m0 0l5-5m6-6V4h5m0 0l-5 5m5 6v5h-5m0 0l5-5"/>
+              </svg>
+            </button>
+          </div>
+        )}
         <article class="prose">
           <slot />
         </article>
@@ -412,6 +428,41 @@ const kvartaPriklady: { slug: string; title: string }[] = [
           closePrezentace();
         }
       });
+
+      // ── Fullscreen (hide sidebar) toggle ──
+      const fsToggle = document.getElementById('fullscreen-toggle');
+      const fsIconExpand = document.getElementById('fs-icon-expand');
+      const fsIconCollapse = document.getElementById('fs-icon-collapse');
+      const fsLabel = document.getElementById('fs-label');
+      const mainContent = document.getElementById('main-content');
+      let isFullWidth = sessionStorage.getItem('content-fullwidth') === 'true';
+
+      function applyFullWidth(on) {
+        if (on) {
+          if (sidebar) sidebar.style.display = 'none';
+          if (mainContent) mainContent.style.maxWidth = '80rem';
+          fsIconExpand?.classList.add('hidden');
+          fsIconCollapse?.classList.remove('hidden');
+          if (fsLabel) fsLabel.textContent = 'Zúžit';
+          if (fsToggle) fsToggle.title = 'Zobrazit postranní panel';
+        } else {
+          if (sidebar) sidebar.style.display = '';
+          if (mainContent) mainContent.style.maxWidth = '';
+          fsIconExpand?.classList.remove('hidden');
+          fsIconCollapse?.classList.add('hidden');
+          if (fsLabel) fsLabel.textContent = 'Celá šířka';
+          if (fsToggle) fsToggle.title = 'Zobrazit na celou šířku';
+        }
+      }
+
+      if (fsToggle) {
+        applyFullWidth(isFullWidth);
+        fsToggle.addEventListener('click', () => {
+          isFullWidth = !isFullWidth;
+          sessionStorage.setItem('content-fullwidth', String(isFullWidth));
+          applyFullWidth(isFullWidth);
+        });
+      }
     </script>
   </body>
 </html>

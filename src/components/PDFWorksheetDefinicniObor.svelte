@@ -46,11 +46,6 @@
       id: 9,
       title: 'Kvadratická funkce',
       text: 'Urči definiční obor funkce f(x) = x² − 4x + 3.'
-    },
-    {
-      id: 10,
-      title: 'Absolutní hodnota',
-      text: 'Urči definiční obor funkce f(x) = |x − 7| + 1.'
     }
   ];
 

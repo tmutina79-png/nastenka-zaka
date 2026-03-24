@@ -182,6 +182,13 @@ body {
 .prose pre code { @apply bg-transparent text-inherit p-0; }
 .prose blockquote { @apply border-l-4 border-primary-400 pl-4 italic text-primary-600 mb-4; }
 .prose a { @apply text-accent underline hover:text-primary-500; }
+.prose a.btn-pdf {
+  color: #fff !important;
+  text-decoration: none !important;
+}
+.prose a.btn-pdf:hover {
+  color: #fff !important;
+}
 .prose hr { @apply border-primary-200 my-8; }
 
 /* Tables */
