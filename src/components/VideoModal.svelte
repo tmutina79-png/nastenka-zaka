@@ -249,8 +249,8 @@
     box-shadow: 0 24px 80px rgba(0,0,0,0.6);
     border: 1px solid #1e3a5f;
     animation: scaleIn 0.25s ease;
-    width: min(92vw, 1000px);
-    height: min(85vh, 700px);
+    width: min(96vw, 1100px);
+    height: min(92vh, 860px);
     display: flex;
     flex-direction: column;
   }
